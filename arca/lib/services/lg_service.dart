@@ -11,17 +11,25 @@ class LGService {
   int screenAmount = 5;
 
   Future<String?> getScreenAmount() async {
-    screenAmount = _client
-        .execute("grep -oP '(?<=DHCP_LG_FRAMES_MAX=).*' personavars.txt") as int;
+    screenAmount =
+        _client.execute("grep -oP '(?<=DHCP_LG_FRAMES_MAX=).*' personavars.txt")
+            as int;
     return _client
         .execute("grep -oP '(?<=DHCP_LG_FRAMES_MAX=).*' personavars.txt");
   }
 
   int get firstScreen {
-    if(screenAmount == 1){
+    if (screenAmount == 1) {
       return 1;
     }
     return (screenAmount / 2).floor() + 2;
+  }
+
+  int get lastScreen {
+    if (screenAmount == 1) {
+      return 1;
+    }
+    return (screenAmount / 2).floor() + 1;
   }
 
   Future<void> setRefresh() async {
@@ -188,10 +196,23 @@ fi
       );
 
       query +=
-      " && echo '${kml.body}' > /var/www/html/kml/slave_$firstScreen.kml";
+          " && echo '${kml.body}' > /var/www/html/kml/slave_$firstScreen.kml";
     }
 
     await _client.execute(query);
   }
 
+  Future<void> sendKMLToLastScreen(String imagePath) async {
+    final kml = KMLEntity(
+      name: 'KML Image',
+      content: '<name>Image Overlay</name>\n<GroundOverlay>\n'
+          '<Icon>\n<href>$imagePath</href>\n</Icon>\n</GroundOverlay>',
+    );
+
+    try {
+      await sendKMLToSlave(lastScreen, kml.body);
+    } catch (e) {
+      print(e);
+    }
+  }
 }

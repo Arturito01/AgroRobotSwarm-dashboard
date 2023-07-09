@@ -13,14 +13,13 @@ class CSVHelper {
     final input = await loadAsset();
     List<List<dynamic>> fields =
         const CsvToListConverter(fieldDelimiter: ';').convert(input);
-    print(fields.runtimeType.toString());
 
     final List<Robot> robots = [];
 
     for (List<dynamic> robotFields in fields) {
       final String activeValue = robotFields[3];
       final bool active = (activeValue == 'true') ? true : false;
-  
+
       final String warningsValue = robotFields[4];
       final bool warnings = (warningsValue == 'true') ? true : false;
 

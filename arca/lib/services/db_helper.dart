@@ -1,5 +1,4 @@
 import 'package:isar/isar.dart';
-import '../models/mocks/mocked_robot.dart';
 import '../models/robot.dart';
 
 class DBProvider {
@@ -28,6 +27,9 @@ class DBProvider {
 
     return mockedRobot + newNonOptionalList;
   }
-
-
+  static Future<void> deleteAllRobots() async {
+    await shared.writeTxn(() async {
+      await shared.robots.filter().activeEqualTo(false).deleteAll();
+    });
+  }
 }
