@@ -1,41 +1,49 @@
-import 'dart:io';
-
-import 'package:arca/views/pages/lg_settings.dart';
+import 'dart:convert';
+import 'package:arca/services/lg_service.dart';
 import 'package:flutter/material.dart';
 import 'package:arca/utils/constants.dart';
-import 'package:arca/services/lg_service.dart';
-import 'package:ssh2/ssh2.dart';
+import 'package:flutter/services.dart';
+
 
 class GalleryScreen extends StatefulWidget {
-  final SSHClient? sshClient;
-  GalleryScreen({Key? key, this.sshClient}) : super(key: key);
+  GalleryScreen({Key? key}) : super(key: key);
 
   @override
   _GalleryScreenState createState() => _GalleryScreenState();
 }
 
 class _GalleryScreenState extends State<GalleryScreen> {
-  final List<String> _images = [];
-  LGService? lgService;
+  late List<String> _images = [
+    'assets/gallery/vineyard/grapes-553463_1280.jpg',
+    'arca/assets/gallery/vineyard/grapes-553464_1280.jpg',
+    'assets/gallery/vineyard/IMG_0196_0.jpg',
+    'assets/gallery/vineyard/IMG_0196_1.jpg',
+    'assets/gallery/vineyard/IMG_0197_0.jpg',
+    'assets/gallery/vineyard/IMG_0197_1.jpg',
+    'assets/gallery/vineyard/IMG_0198_0.jpg',
+    'assets/gallery/vineyard/IMG_0198_1.jpg',
+    'assets/gallery/vineyard/IMG_0199_0.jpg',
+    'assets/gallery/vineyard/IMG_0199_1.jpg',
+    'assets/gallery/vineyard/IMG_0200_0.jpg',
+    'assets/gallery/vineyard/IMG_0200_1.jpg',
+    'assets/gallery/vineyard/IMG_0201_0.jpg',
+    'assets/gallery/vineyard/IMG_0201_1.jpg',
+    'assets/gallery/vineyard/IMG_0202_0.jpg',
+    'assets/gallery/vineyard/IMG_0202_1.jpg',
+    'assets/gallery/vineyard/IMG_0203_0.jpg',
+    'assets/gallery/vineyard/IMG_0203_1.jpg',
+  ];
 
-  void loadImages() {
-    const String folderPath = 'assets/gallery/vineyard';
+  //final LGService? lgService = LGService.shared;
 
-    Directory(folderPath).listSync().forEach((FileSystemEntity entity) {
-      if (entity is File && entity.path.endsWith('.jpg') ||
-          entity.path.endsWith('.png')) {
-        final String relativePath = Uri.file(entity.path).path;
-        _images.add(relativePath);
-      }
-    });
-  }
+  Future<void> loadImages() async {
+    final manifestContent = await rootBundle.loadString('AssetManifest.json');
+    final Map<String, dynamic> manifestMap = json.decode(manifestContent);
 
-  @override
-  void initState() {
-    super.initState();
-    lgService = widget.sshClient != null
-        ? LGSettings.createLGService(widget.sshClient)
-        : null;
+    _images = manifestMap.keys
+        .where((String key) => key.contains('assets/gallery/vineyard/'))
+        .where((String key) => key.contains('.jpg') || key.contains('.png'))
+        .toList();
   }
 
   bool isAscending = true;
@@ -44,7 +52,6 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    loadImages();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: secondaryColor,
@@ -157,7 +164,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           alignment: Alignment.bottomCenter,
           child: ElevatedButton(
             onPressed: () {
-              lgService?.sendKMLToLastScreen(selectedImage);
+              //lgService?.sendKMLToLastScreen(selectedImage);
             },
             child: const Text('Send KML'),
           ),

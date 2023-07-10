@@ -3,6 +3,7 @@ import 'package:ssh2/ssh2.dart';
 
 class SSHService {
   late SSHClient client;
+  static SSHService shared = SSHService();
 
   Future<void> connect(SSHEntity connectionSettings) async {
     client = SSHClient(

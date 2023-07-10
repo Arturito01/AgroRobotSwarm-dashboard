@@ -20,12 +20,13 @@ void main() async {
   final isar =
       await Isar.open([RobotSchema], directory: dir.path, inspector: true);
   DBProvider.shared = isar;
-  //DBProvider.deleteAllRobots();
-  DBProvider.mockedRobot = await CSVHelper.getRobotsFromFile();
+  DBProvider.deleteAllRobots();
+  await CSVHelper.getRobotsFromFile();
   SettingsService.storage = await SharedPreferences.getInstance();
 
   runApp(const MyApp());
 }
+
 
 /*void setLogos(LGService lgService) async {
   try {

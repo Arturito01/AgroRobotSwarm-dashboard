@@ -5,15 +5,13 @@ import '../entities/kml/screen_overlay_entity.dart';
 
 class LGService {
   final SSHClient _client;
-
   LGService(SSHClient client) : _client = client;
+  static late LGService shared;
 
   int screenAmount = 5;
 
   Future<String?> getScreenAmount() async {
-    screenAmount =
-        _client.execute("grep -oP '(?<=DHCP_LG_FRAMES_MAX=).*' personavars.txt")
-            as int;
+
     return _client
         .execute("grep -oP '(?<=DHCP_LG_FRAMES_MAX=).*' personavars.txt");
   }
@@ -203,6 +201,7 @@ fi
   }
 
   Future<void> sendKMLToLastScreen(String imagePath) async {
+    print("hiiii");
     final kml = KMLEntity(
       name: 'KML Image',
       content: '<name>Image Overlay</name>\n<GroundOverlay>\n'

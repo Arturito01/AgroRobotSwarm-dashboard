@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsService {
   static late SharedPreferences storage;
+  static SettingsService shared = SettingsService();
 
   Future<void> saveConnectionSettings(
       String username, String password, String ipAddress, String port) async {

@@ -14,7 +14,8 @@ class LGSettings extends StatelessWidget {
 
   static LGService? createLGService(SSHClient? sshClient) {
     if (sshClient != null) {
-      return LGService(sshClient);
+      LGService.shared = LGService(sshClient);
+      return LGService.shared;
     }
     return null;
   }

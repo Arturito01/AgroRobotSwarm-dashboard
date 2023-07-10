@@ -20,8 +20,8 @@ class _ConnectionSettingsState extends State<ConnectionSettings> {
   final TextEditingController _ipController = TextEditingController();
   final TextEditingController _portController = TextEditingController();
 
-  final SettingsService settingsService = SettingsService();
-  final SSHService sshService = SSHService();
+  final SettingsService settingsService = SettingsService.shared;
+  final SSHService sshService = SSHService.shared;
 
   @override
   void initState() {

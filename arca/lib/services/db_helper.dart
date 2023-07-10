@@ -12,6 +12,12 @@ class DBProvider {
     });
   }
 
+  static Future<void>  addNewRobotFromCSV(Robot robot) async {
+    await shared.writeTxn(() async {
+      await shared.robots.put(robot); // insert & update
+    });
+  }
+
   static Future<void> deleteRobot(int robotId) async {
     await shared.writeTxn(() async {
       final robot = await shared.robots.get(robotId);

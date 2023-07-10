@@ -5,6 +5,7 @@ import 'package:arca/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:arca/model_views/constant_view_model.dart';
 import 'package:arca/utils/constants.dart';
+import 'package:ssh2/ssh2.dart';
 import '../models/robot.dart';
 import 'pages/robot_detail_page.dart';
 import 'calendar_screen.dart';
