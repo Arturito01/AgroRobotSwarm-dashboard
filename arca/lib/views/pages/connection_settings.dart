@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ssh2/ssh2.dart';
 
 import '../../entities/ssh_entity.dart';
-import '../../services/settings_service.dart';
+import '../../services/storage_service.dart';
 import '../../services/ssh_service.dart';
 import '../../utils/constants.dart';
 
@@ -20,7 +20,7 @@ class _ConnectionSettingsState extends State<ConnectionSettings> {
   final TextEditingController _ipController = TextEditingController();
   final TextEditingController _portController = TextEditingController();
 
-  final SettingsService settingsService = SettingsService.shared;
+  final StorageService settingsService = StorageService.shared;
   final SSHService sshService = SSHService.shared;
 
   @override

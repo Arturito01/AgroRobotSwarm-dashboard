@@ -164,7 +164,7 @@ class _MainState extends State<MainScreen> {
                     ),
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MapScreen()));
+                          MaterialPageRoute(builder: (context) => MapScreen(viewModel: viewModel)));
                     },
                     child: const Text(
                       'MAP',
@@ -194,10 +194,10 @@ class _MainState extends State<MainScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CalendarScreen()));
+                              builder: (context) => CalendarScreen(robots: viewModel.getRobots())));
                     },
                     child: const Text(
-                      'CALENDAR',
+                      'HISTORY',
                       style: TextStyle(color: textNotSelected),
                     ),
                   ),
@@ -209,11 +209,15 @@ class _MainState extends State<MainScreen> {
         ),
         IconButton(
           icon: const Icon(Icons.south_america, color: Colors.white, size: 30),
-          onPressed: () {
-            Navigator.push(
+          onPressed: () async {
+            await Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => FieldScreen()),
+              MaterialPageRoute(
+                  builder: (context) => FieldScreen(viewModel: viewModel)),
             );
+            setState(() {
+
+            });
           },
         ),
         IconButton(
@@ -256,7 +260,7 @@ class _MainState extends State<MainScreen> {
               child: RobotDetailPage(
                   robot: robots[0],
                   deletePressed: () {
-                    _deleteRobot(robots[0].id);
+                    _deleteRobot(robots[0].robotId);
                   }),
             ),
           ],
@@ -288,7 +292,7 @@ class _MainState extends State<MainScreen> {
                 child: RobotDetailPage(
                     robot: robots[currentPageIndex],
                     deletePressed: () {
-                      _deleteRobot(robots[currentPageIndex].id);
+                      _deleteRobot(robots[currentPageIndex].robotId);
                     })),
           ],
         ),
@@ -304,34 +308,30 @@ class _MainState extends State<MainScreen> {
   }
 
   void _showAddRobotDialog(BuildContext context) {
-    //poner en page
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Agregar Robot'),
+          title: const Text('Add Robot'),
           content: TextField(
             onChanged: (value) {
-              robotName =
-                  value; // Actualizar el valor del nombre del robot al escribir en el TextField
+              robotName = value;
             },
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancelar'),
+              child: const Text('Cancel'),
               onPressed: () {
-                Navigator.of(context)
-                    .pop(); // Cerrar el pop-up sin guardar el robot
+                Navigator.of(context).pop();
               },
             ),
             TextButton(
               child: const Text(
-                'Agregar',
+                'Add',
               ),
               onPressed: () {
                 _incrementCounter(robotName);
-                Navigator.of(context)
-                    .pop(); // Cerrar el pop-up después de agregar el robot
+                Navigator.of(context).pop();
               },
             ),
           ],

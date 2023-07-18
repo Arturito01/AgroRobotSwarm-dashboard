@@ -33,14 +33,19 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   ];
 
   @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+  void initState() {
+    super.initState();
 
     Timer(const Duration(seconds: 4), () {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const MainScreen()));
     });
+  }
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
 
     return SafeArea(
       child: Scaffold(

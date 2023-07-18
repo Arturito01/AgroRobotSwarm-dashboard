@@ -1,3 +1,4 @@
+import 'package:arca/entities/kml/look_at_entity.dart';
 import 'package:ssh2/ssh2.dart';
 
 import '../entities/kml/kml_entity.dart';
@@ -6,12 +7,11 @@ import '../entities/kml/screen_overlay_entity.dart';
 class LGService {
   final SSHClient _client;
   LGService(SSHClient client) : _client = client;
-  static late LGService shared;
+  static LGService? shared;
 
   int screenAmount = 5;
 
   Future<String?> getScreenAmount() async {
-
     return _client
         .execute("grep -oP '(?<=DHCP_LG_FRAMES_MAX=).*' personavars.txt");
   }
@@ -162,7 +162,6 @@ fi
 
       await sendKMLToSlave(firstScreen, kml.body);
     } catch (e) {
-      // ignore: avoid_print
       print(e);
     }
   }
@@ -171,6 +170,17 @@ fi
     try {
       await _client
           .execute("echo '$content' > /var/www/html/kml/slave_$screen.kml");
+    } catch (e) {
+      // ignore: avoid_print
+      print(e);
+    }
+  }
+
+  Future<void> sendKMLToMaster(int screen, String content) async {
+    try {
+      await _client.execute("echo '$content' > /var/www/html/camp.kml");
+      await _client
+          .execute("echo 'http://lg1:81/camp.kml' > /var/www/html/kmls.txt");
     } catch (e) {
       // ignore: avoid_print
       print(e);
@@ -200,18 +210,25 @@ fi
     await _client.execute(query);
   }
 
-  Future<void> sendKMLToLastScreen(String imagePath) async {
-    print("hiiii");
-    final kml = KMLEntity(
-      name: 'KML Image',
-      content: '<name>Image Overlay</name>\n<GroundOverlay>\n'
-          '<Icon>\n<href>$imagePath</href>\n</Icon>\n</GroundOverlay>',
-    );
+  Future<void> sendKMLToLastScreen(String image) async {
+    print("hii");
+    final pw = _client.passwordOrKey;
+
+    final command = 'echo "$image" > /var/www/html/kml/slave_${lastScreen}.kml';
+    final query = 'sshpass -p $pw ssh -t lg$lastScreen \'$command\'';
 
     try {
-      await sendKMLToSlave(lastScreen, kml.body);
+      await _client.execute(query);
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<void> sendTour(LookAtEntity lookAt) async {
+      await query('flytoview=${lookAt.linearTag}');
+  }
+
+  Future<void> query(String content) async {
+    await _client.execute('echo "$content" > /tmp/query.txt');
   }
 }

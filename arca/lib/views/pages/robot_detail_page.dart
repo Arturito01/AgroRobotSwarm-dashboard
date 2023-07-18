@@ -39,18 +39,6 @@ class _RobotDetailPageState extends State<RobotDetailPage> {
             widget.robot?.name ?? 'unknown',
             style: const TextStyle(color: Colors.white),
           ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: IconButton(
-                icon: const Icon(Icons.delete),
-                tooltip: 'Delete robot',
-                color: Colors.red,
-                iconSize: 40,
-                onPressed: widget.deletePressed,
-              ),
-            )
-          ],
         ),
         body: body(robot, context));
   }
@@ -87,7 +75,7 @@ Widget body(Robot? robot, BuildContext context) {
                     ),
                     const SizedBox(width: 60),
                     Text(
-                      robot?.id.toString() ?? "999",
+                      robot?.robotId.toString() ?? "999",
                       style: const TextStyle(color: Colors.black, fontSize: 20),
                     ),
                   ],

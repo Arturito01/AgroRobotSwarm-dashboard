@@ -1,31 +1,55 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
+import 'package:arca/entities/kml/look_at_entity.dart';
+import 'package:arca/services/lg_service.dart';
 import 'package:arca/utils/constants.dart';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../model_views/constant_view_model.dart';
+import '../models/city.dart';
+import '../models/country.dart';
+import '../models/land.dart';
+
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
+  final ConstantViewModel viewModel;
+  const MapScreen({Key? key, required this.viewModel}) : super(key: key);
 
   @override
   State<MapScreen> createState() => MapScreenState();
 }
 
 class MapScreenState extends State<MapScreen> {
+  Country? selectedCountry;
+  City? selectedCity;
+  Land? selectedLand;
+
+  late CameraPosition cameraPosition;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedCountry = widget.viewModel.countrySelected!;
+    selectedCity = widget.viewModel.citySelected!;
+    selectedLand = widget.viewModel.landSelected!;
+    loadCoords();
+  }
+
+  void loadCoords() {
+    double? latitude;
+    double? longitude;
+
+    latitude = selectedCountry?.lat;
+    longitude = selectedCountry?.long;
+
+    cameraPosition = CameraPosition(
+      target: LatLng(latitude!, longitude!),
+      zoom: 6,
+    );
+  }
+
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
-
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
 
   @override
   Widget build(BuildContext context) {
@@ -57,21 +81,20 @@ class MapScreenState extends State<MapScreen> {
       ),
       body: GoogleMap(
         mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
+        initialCameraPosition: cameraPosition,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: const Text('To the lake!'),
+        onPressed: _sendKML,
+        label: const Text('Send KML'),
         icon: const Icon(Icons.directions_boat),
       ),
     );
   }
 
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+  Future<void> _sendKML() async {
+    await LGService.shared?.sendTour(LookAtEntity(lng: cameraPosition.target.longitude, lat: cameraPosition.target.latitude, range: '1500', tilt: '60', heading: '0'));
   }
 }

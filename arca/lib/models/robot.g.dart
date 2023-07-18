@@ -62,18 +62,23 @@ const RobotSchema = CollectionSchema(
       name: r'name',
       type: IsarType.string,
     ),
-    r'totalDistance': PropertySchema(
+    r'robotId': PropertySchema(
       id: 9,
+      name: r'robotId',
+      type: IsarType.long,
+    ),
+    r'totalDistance': PropertySchema(
+      id: 10,
       name: r'totalDistance',
       type: IsarType.double,
     ),
     r'totalKg': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'totalKg',
       type: IsarType.long,
     ),
     r'warnings': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'warnings',
       type: IsarType.bool,
     )
@@ -122,9 +127,10 @@ void _robotSerialize(
   writer.writeBool(offsets[6], object.instructions);
   writer.writeLong(offsets[7], object.landId);
   writer.writeString(offsets[8], object.name);
-  writer.writeDouble(offsets[9], object.totalDistance);
-  writer.writeLong(offsets[10], object.totalKg);
-  writer.writeBool(offsets[11], object.warnings);
+  writer.writeLong(offsets[9], object.robotId);
+  writer.writeDouble(offsets[10], object.totalDistance);
+  writer.writeLong(offsets[11], object.totalKg);
+  writer.writeBool(offsets[12], object.warnings);
 }
 
 Robot _robotDeserialize(
@@ -144,9 +150,10 @@ Robot _robotDeserialize(
   object.instructions = reader.readBool(offsets[6]);
   object.landId = reader.readLong(offsets[7]);
   object.name = reader.readStringOrNull(offsets[8]);
-  object.totalDistance = reader.readDouble(offsets[9]);
-  object.totalKg = reader.readLong(offsets[10]);
-  object.warnings = reader.readBool(offsets[11]);
+  object.robotId = reader.readLong(offsets[9]);
+  object.totalDistance = reader.readDouble(offsets[10]);
+  object.totalKg = reader.readLong(offsets[11]);
+  object.warnings = reader.readBool(offsets[12]);
   return object;
 }
 
@@ -176,10 +183,12 @@ P _robotDeserializeProp<P>(
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     case 9:
-      return (reader.readDouble(offset)) as P;
-    case 10:
       return (reader.readLong(offset)) as P;
+    case 10:
+      return (reader.readDouble(offset)) as P;
     case 11:
+      return (reader.readLong(offset)) as P;
+    case 12:
       return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -812,6 +821,58 @@ extension RobotQueryFilter on QueryBuilder<Robot, Robot, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Robot, Robot, QAfterFilterCondition> robotIdEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'robotId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Robot, Robot, QAfterFilterCondition> robotIdGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'robotId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Robot, Robot, QAfterFilterCondition> robotIdLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'robotId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Robot, Robot, QAfterFilterCondition> robotIdBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'robotId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Robot, Robot, QAfterFilterCondition> totalDistanceEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1050,6 +1111,18 @@ extension RobotQuerySortBy on QueryBuilder<Robot, Robot, QSortBy> {
     });
   }
 
+  QueryBuilder<Robot, Robot, QAfterSortBy> sortByRobotId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'robotId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Robot, Robot, QAfterSortBy> sortByRobotIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'robotId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Robot, Robot, QAfterSortBy> sortByTotalDistance() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'totalDistance', Sort.asc);
@@ -1208,6 +1281,18 @@ extension RobotQuerySortThenBy on QueryBuilder<Robot, Robot, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Robot, Robot, QAfterSortBy> thenByRobotId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'robotId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Robot, Robot, QAfterSortBy> thenByRobotIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'robotId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Robot, Robot, QAfterSortBy> thenByTotalDistance() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'totalDistance', Sort.asc);
@@ -1301,6 +1386,12 @@ extension RobotQueryWhereDistinct on QueryBuilder<Robot, Robot, QDistinct> {
     });
   }
 
+  QueryBuilder<Robot, Robot, QDistinct> distinctByRobotId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'robotId');
+    });
+  }
+
   QueryBuilder<Robot, Robot, QDistinct> distinctByTotalDistance() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'totalDistance');
@@ -1378,6 +1469,12 @@ extension RobotQueryProperty on QueryBuilder<Robot, Robot, QQueryProperty> {
   QueryBuilder<Robot, String?, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Robot, int, QQueryOperations> robotIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'robotId');
     });
   }
 

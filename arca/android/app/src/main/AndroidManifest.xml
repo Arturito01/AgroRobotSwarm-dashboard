@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="arca"
+        android:label="ARCA"
         android:name="${applicationName}"
         android:icon="@mipmap/img"
         android:usesCleartextTraffic="true"
@@ -28,7 +28,7 @@
         </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCsNuOwKJcE7LQTMxlbPhB9P2_cpTUZjbY" />
+            android:value="${googleMapsApiKey}"/>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

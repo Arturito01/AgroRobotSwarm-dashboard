@@ -6,6 +6,8 @@ part 'robot.g.dart';
 class Robot {
   Id id = Isar.autoIncrement;
 
+  int robotId = Isar.autoIncrement;
+
   String? name;
 
   int battery = 100;

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:arca/utils/constants.dart';
 import 'package:arca/views/pages/connection_settings.dart';
-import 'package:arca/views/pages/lg_settings.dart';
+import 'package:arca/views/pages/lg_settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ssh2/ssh2.dart';
 
@@ -89,7 +89,7 @@ class _AdminScreenState extends State<AdminScreen>
         controller: _tabController,
         children: [
           ConnectionSettings(onConnectionChanged: _handleConnectionChanged),
-          LGSettings(connected: connected, sshClient: sshClient,),
+          LGSettingsPage(),
         ],
       ),
       backgroundColor: secondaryColor,

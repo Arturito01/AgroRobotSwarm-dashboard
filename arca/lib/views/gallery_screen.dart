@@ -3,6 +3,7 @@ import 'package:arca/services/lg_service.dart';
 import 'package:flutter/material.dart';
 import 'package:arca/utils/constants.dart';
 import 'package:flutter/services.dart';
+import 'package:arca/services/image_loader.dart';
 
 
 class GalleryScreen extends StatefulWidget {
@@ -13,38 +14,7 @@ class GalleryScreen extends StatefulWidget {
 }
 
 class _GalleryScreenState extends State<GalleryScreen> {
-  late List<String> _images = [
-    'assets/gallery/vineyard/grapes-553463_1280.jpg',
-    'arca/assets/gallery/vineyard/grapes-553464_1280.jpg',
-    'assets/gallery/vineyard/IMG_0196_0.jpg',
-    'assets/gallery/vineyard/IMG_0196_1.jpg',
-    'assets/gallery/vineyard/IMG_0197_0.jpg',
-    'assets/gallery/vineyard/IMG_0197_1.jpg',
-    'assets/gallery/vineyard/IMG_0198_0.jpg',
-    'assets/gallery/vineyard/IMG_0198_1.jpg',
-    'assets/gallery/vineyard/IMG_0199_0.jpg',
-    'assets/gallery/vineyard/IMG_0199_1.jpg',
-    'assets/gallery/vineyard/IMG_0200_0.jpg',
-    'assets/gallery/vineyard/IMG_0200_1.jpg',
-    'assets/gallery/vineyard/IMG_0201_0.jpg',
-    'assets/gallery/vineyard/IMG_0201_1.jpg',
-    'assets/gallery/vineyard/IMG_0202_0.jpg',
-    'assets/gallery/vineyard/IMG_0202_1.jpg',
-    'assets/gallery/vineyard/IMG_0203_0.jpg',
-    'assets/gallery/vineyard/IMG_0203_1.jpg',
-  ];
-
-  //final LGService? lgService = LGService.shared;
-
-  Future<void> loadImages() async {
-    final manifestContent = await rootBundle.loadString('AssetManifest.json');
-    final Map<String, dynamic> manifestMap = json.decode(manifestContent);
-
-    _images = manifestMap.keys
-        .where((String key) => key.contains('assets/gallery/vineyard/'))
-        .where((String key) => key.contains('.jpg') || key.contains('.png'))
-        .toList();
-  }
+  late final List<String> _images = ImageLoader.images;
 
   bool isAscending = true;
   bool isShowingFullImage = false;
@@ -164,7 +134,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           alignment: Alignment.bottomCenter,
           child: ElevatedButton(
             onPressed: () {
-              //lgService?.sendKMLToLastScreen(selectedImage);
+              LGService.shared?.sendKMLToLastScreen(selectedImage);
             },
             child: const Text('Send KML'),
           ),

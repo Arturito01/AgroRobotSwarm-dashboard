@@ -3,6 +3,7 @@ import '../robot.dart';
 class MockedRobot {
   static Robot from(
       {required int id,
+        required int robotId,
       required String name,
       required int battery,
       required bool active,
@@ -16,7 +17,8 @@ class MockedRobot {
       required int cityId,
       required int countryId}) {
     final finalRobot = Robot();
-    finalRobot.id= id;
+    finalRobot.id=id;
+    finalRobot.robotId= robotId;
     finalRobot.name = name;
     finalRobot.battery = battery;
     finalRobot.active = active;

@@ -1,3 +1,4 @@
+import 'package:arca/model_views/constant_view_model.dart';
 import 'package:isar/isar.dart';
 import '../models/robot.dart';
 
@@ -27,12 +28,24 @@ class DBProvider {
     });
   }
 
-  static List<Robot> getRobots() {
-    final optionalRobots = shared.robots.where().findAllSync();
-    List<Robot> newNonOptionalList = optionalRobots.whereType<Robot>().toList();
+  static List<Robot> getRobots(int? countrySelected, int? citySelected, int? fieldSelected) {
+    if (countrySelected != null && citySelected != null && fieldSelected != null) {
+      final optionalRobots = shared.robots
+          .filter()
+          .countryIdEqualTo(countrySelected)
+          .cityIdEqualTo(citySelected)
+          .landIdEqualTo(fieldSelected)
+          .findAllSync();
 
-    return mockedRobot + newNonOptionalList;
+      List<Robot> newNonOptionalList = optionalRobots.whereType<Robot>().toList();
+
+      return newNonOptionalList;
+    } else {
+      // Si no se seleccionó ningún país, ciudad o terreno, devolver una lista vacía
+      return [];
+    }
   }
+
   static Future<void> deleteAllRobots() async {
     await shared.writeTxn(() async {
       await shared.robots.filter().activeEqualTo(false).deleteAll();
