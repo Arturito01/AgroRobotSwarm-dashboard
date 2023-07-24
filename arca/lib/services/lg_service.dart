@@ -3,11 +3,14 @@ import 'package:ssh2/ssh2.dart';
 
 import '../entities/kml/kml_entity.dart';
 import '../entities/kml/screen_overlay_entity.dart';
+import 'file_service.dart';
 
 class LGService {
   final SSHClient _client;
   LGService(SSHClient client) : _client = client;
   static LGService? shared;
+  final String _url = 'http://lg1:81';
+
 
   int screenAmount = 5;
 
@@ -210,22 +213,39 @@ fi
     await _client.execute(query);
   }
 
-  Future<void> sendKMLToLastScreen(String image) async {
+  Future<void> sendKMLToLastScreen(KMLEntity kml, String image) async {
     print("hii");
-    final pw = _client.passwordOrKey;
+    final fileService = FileService();
+    final fileName = '${kml.name}.kml';
 
-    final command = 'echo "$image" > /var/www/html/kml/slave_${lastScreen}.kml';
-    final query = 'sshpass -p $pw ssh -t lg$lastScreen \'$command\'';
+    await clearKml();
 
-    try {
-      await _client.execute(query);
-    } catch (e) {
-      print(e);
+    image = (await fileService.createImage("image", image)) as String;
+    String? result = await _client.connectSFTP();
+    if (result == 'sftp_connected') {
+      await _client.sftpUpload(
+          path: image,
+          toPath: '/var/www/html',
+          callback: (progress) {
+            print('Sent $progress');
+          });
     }
+
+    final kmlFile = await fileService.createFile(fileName, kml.body);
+    result = await _client.connectSFTP();
+    if (result == 'sftp_connected') {
+      await _client.sftpUpload(
+          path: kmlFile.path,
+          toPath: '/var/www/html',
+          callback: (progress) {
+            print('Sent $progress');
+          });
+    }
+    await _client.execute('echo "$_url/$fileName" > /var/www/html/kmls.txt');
   }
 
   Future<void> sendTour(LookAtEntity lookAt) async {
-      await query('flytoview=${lookAt.linearTag}');
+    await query('flytoview=${lookAt.linearTag}');
   }
 
   Future<void> query(String content) async {

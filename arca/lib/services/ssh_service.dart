@@ -26,7 +26,7 @@ class SSHService {
     await client.disconnect();
   }
 
-  Future<void> initializeSSH () async{
+  Future<void> initializeSSH() async {
     final map = await StorageService.shared.getConnectionSettings();
     final username = map["username"] ?? "";
     final password = map["password"] ?? "";
@@ -51,4 +51,16 @@ class SSHService {
     }
   }
 
+  Future<void> upload(String filePath) async {
+    String? result = await client.connectSFTP();
+
+    if (result == 'sftp_connected') {
+      await client.sftpUpload(
+          path: filePath,
+          toPath: '/var/www/html',
+          callback: (progress) {
+            print('Sent $progress');
+          });
+    }
+  }
 }

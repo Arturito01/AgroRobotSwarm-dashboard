@@ -1,5 +1,5 @@
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:csv/csv.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 import 'city.dart';
 import 'country.dart';
@@ -33,6 +33,8 @@ class LandSelection {
       final cityLongitude = fields[i][8] as double;
       final cityLatitude = fields[i][9] as double;
       final landName = fields[i][10] as String;
+      final landLongitude = double.parse(fields[i][11].toString());
+      final landLatitude = double.parse(fields[i][12].toString());
 
       Country country;
       if (!addedCountryName.contains(countryName)) {
@@ -62,9 +64,13 @@ class LandSelection {
       }
 
       Land land;
-      land = Land(id: landId, city: city, land: landName);
+      land = Land(
+          id: landId,
+          city: city,
+          land: landName,
+          long: landLongitude,
+          lat: landLatitude);
       lands.add(land);
-
     }
   }
 }

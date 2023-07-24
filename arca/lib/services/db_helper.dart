@@ -6,10 +6,10 @@ class DBProvider {
   static late Isar shared;
   static List<Robot> mockedRobot = [];
 
-  static Future<void>  addNewRobot(String name) async {
-    final newRobot = Robot()..name = name;
+  static Future<void>  addNewRobot(String name, int countryId, int cityId, int landId, int id) async {
+    final newRobot = Robot()..name = name..countryId = countryId..cityId = cityId..landId = landId .. robotId = id;
     await shared.writeTxn(() async {
-      await shared.robots.put(newRobot); // insert & update
+      await shared.robots.put(newRobot);
     });
   }
 

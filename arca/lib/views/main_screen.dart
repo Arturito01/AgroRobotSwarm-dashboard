@@ -30,7 +30,7 @@ class _MainState extends State<MainScreen> {
   String bodyContent = 'Main';
 
   Future<void> _incrementCounter(String robotName) async {
-    await viewModel.addNewRobot(robotName);
+    await viewModel.addNewRobot(robotName, viewModel.countrySelected!.id, viewModel.citySelected!.id,viewModel.landSelected!.id, viewModel.getRobots().length + 1);
     setState(() {});
   }
 
@@ -330,7 +330,7 @@ class _MainState extends State<MainScreen> {
                 'Add',
               ),
               onPressed: () {
-                _incrementCounter(robotName);
+                //_incrementCounter(robotName);
                 Navigator.of(context).pop();
               },
             ),

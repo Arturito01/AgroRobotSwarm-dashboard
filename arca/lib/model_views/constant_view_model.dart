@@ -6,8 +6,8 @@ import '../models/robot.dart';
 import '../services/db_helper.dart';
 
 class ConstantViewModel {
-  Future<void> addNewRobot(String name) async {
-    await DBProvider.addNewRobot(name);
+  Future<void> addNewRobot(String name, int countryId, int cityId, int landId, int id) async {
+    await DBProvider.addNewRobot(name, countryId, cityId, landId, id);
   }
 
   Future<void> deleteRobot(int robotId) async {

@@ -50,6 +50,7 @@ dependencies:
   csv: ^5.0.2
   dropdown_button2: ^2.1.4
   xml: ^6.3.0
+  image: ^4.0.17
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +82,7 @@ flutter:
     - assets/images/
     - assets/data/
     - assets/gallery/vineyard/
+    - assets/robots/
     - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see

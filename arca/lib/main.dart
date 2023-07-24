@@ -21,7 +21,7 @@ void main() async {
   final isar =
       await Isar.open([RobotSchema], directory: dir.path, inspector: true);
   DBProvider.shared = isar;
-
+  DBProvider.deleteAllRobots();
   await CSVHelper.getRobotsFromFile();
   await LandSelection.getLandFromFile();
   StorageService.storage = await SharedPreferences.getInstance();

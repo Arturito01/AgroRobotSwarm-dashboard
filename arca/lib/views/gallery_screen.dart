@@ -1,10 +1,11 @@
-import 'dart:convert';
-import 'package:arca/services/lg_service.dart';
-import 'package:flutter/material.dart';
-import 'package:arca/utils/constants.dart';
-import 'package:flutter/services.dart';
-import 'package:arca/services/image_loader.dart';
+import 'dart:math';
 
+import 'package:arca/services/image_loader.dart';
+import 'package:arca/services/lg_service.dart';
+import 'package:arca/utils/constants.dart';
+import 'package:flutter/material.dart';
+
+import '../entities/kml/kml_entity.dart';
 
 class GalleryScreen extends StatefulWidget {
   GalleryScreen({Key? key}) : super(key: key);
@@ -14,7 +15,34 @@ class GalleryScreen extends StatefulWidget {
 }
 
 class _GalleryScreenState extends State<GalleryScreen> {
-  late final List<String> _images = ImageLoader.images;
+  final List<String> allImages = ImageLoader.images;
+  final List<String> _images = [];
+
+  void _generateRandomStrings() {
+    _images.clear();
+    final random = Random();
+    final totalStrings = allImages.length;
+
+    while (_images.length < 50 && _images.length < totalStrings) {
+      int randomIndex = random.nextInt(totalStrings);
+      String randomString = allImages[randomIndex];
+
+      if (!_images.contains(randomString)) {
+        _images.add(randomString);
+      }
+    }
+  }
+
+  final kml = KMLEntity(
+    name: "image",
+    content: '',
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _generateRandomStrings();
+  }
 
   bool isAscending = true;
   bool isShowingFullImage = false;
@@ -134,7 +162,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           alignment: Alignment.bottomCenter,
           child: ElevatedButton(
             onPressed: () {
-              LGService.shared?.sendKMLToLastScreen(selectedImage);
+              LGService.shared?.sendKMLToLastScreen(kml, selectedImage);
             },
             child: const Text('Send KML'),
           ),
