@@ -2,14 +2,18 @@ import 'package:arca/entities/kml/look_at_entity.dart';
 import 'package:ssh2/ssh2.dart';
 
 import '../entities/kml/kml_entity.dart';
+import '../entities/kml/orbit.dart';
 import '../entities/kml/screen_overlay_entity.dart';
+import '../models/land.dart';
 import 'file_service.dart';
 
 class LGService {
   final SSHClient _client;
+  FileService? _fileService;
   LGService(SSHClient client) : _client = client;
   static LGService? shared;
   final String _url = 'http://lg1:81';
+  String localPath = "";
 
 
   int screenAmount = 5;
@@ -205,12 +209,41 @@ fi
         content: '<name>Logos</name>',
         screenOverlay: ScreenOverlayEntity.logos().tag,
       );
-
       query +=
           " && echo '${kml.body}' > /var/www/html/kml/slave_$firstScreen.kml";
     }
 
     await _client.execute(query);
+  }
+
+  String buildOrbit(Land land) {
+    final lookAt = LookAtEntity(
+      lng: land.long,
+      lat: land.lat,
+      range: '1500',
+      tilt: '60',
+      heading: '0',
+    );
+
+    return Orbit.buildOrbit(Orbit.generateOrbitTag(lookAt));
+  }
+
+  Future<void> sendOrbit(String tourKml, String tourName) async {
+    final fileName = '$tourName.kml';
+
+    final kmlFile = await _fileService?.createFile(fileName, tourKml);
+    String? result = await _client.connectSFTP();
+
+    if (result == 'sftp_connected') {
+      await _client.sftpUpload(
+          path: kmlFile!.path,
+          toPath: '/var/www/html',
+          callback: (progress) {
+            print('Sent $progress');
+          });
+    }
+    await _client
+        .execute('echo "\n$_url/$fileName" >> /var/www/html/kmls.txt');
   }
 
   Future<void> sendKMLToLastScreen(KMLEntity kml, String image) async {

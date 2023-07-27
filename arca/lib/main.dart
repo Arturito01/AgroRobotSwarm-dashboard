@@ -28,6 +28,7 @@ void main() async {
   LandService.storage = await SharedPreferences.getInstance();
   await SSHService.shared.initializeSSH();
   setLogos();
+  clearKML();
   ImageLoader.images =
       await ImageLoader.loadImagesFromFolder('assets/gallery/vineyard');
   runApp(const MyApp());
@@ -36,6 +37,13 @@ void main() async {
 void setLogos() async{
   try{
     await LGService.shared?.setLogos();
+  }catch(e){
+    print(e);
+  }
+}
+void clearKML() async{
+  try{
+    await LGService.shared?.clearKml();
   }catch(e){
     print(e);
   }

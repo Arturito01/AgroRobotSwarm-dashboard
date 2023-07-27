@@ -7,28 +7,27 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../model_views/constant_view_model.dart';
-import '../models/city.dart';
-import '../models/country.dart';
 import '../models/land.dart';
+import '../models/robot.dart';
 
 class MapScreen extends StatefulWidget {
   final ConstantViewModel viewModel;
-  const MapScreen({Key? key, required this.viewModel}) : super(key: key);
+  final List<Robot> robots;
+  const MapScreen({Key? key, required this.viewModel, required this.robots}) : super(key: key);
 
   @override
   State<MapScreen> createState() => MapScreenState();
 }
 
 class MapScreenState extends State<MapScreen> {
-  Country? selectedCountry;
-  City? selectedCity;
   Land? selectedLand;
 
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
-  List<LatLng> kmlCoordinates = [];
   late CameraPosition cameraPosition;
+  bool showExtraButton = false;
+  Set<Marker> markers = {};
 
-  String selectedRobotImage = 'assets/robots/amiga.png';
+  String selectedRobotImage = 'assets/robots/amiga2.png';
 
   List<String> robotImages = [
     'assets/robots/amiga.png',
@@ -38,21 +37,38 @@ class MapScreenState extends State<MapScreen> {
   int currentImageIndex = 0;
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
     selectedLand = widget.viewModel.landSelected!;
-    addCustomIcon();
     loadCoords();
+    addCustomIcon();
+  }
+
+  void loadMarkers(){
+    for (int i = 0; i < widget.robots.length; i++) {
+      Robot robot = widget.robots[i];
+      Marker marker = Marker(
+        markerId: MarkerId("marker_$i"),
+        position: LatLng(selectedLand!.lat, selectedLand!.long),
+        infoWindow: InfoWindow(title: robot.name),
+        icon: markerIcon,
+      );
+        markers.add(marker);
+    }
   }
 
   void addCustomIcon() {
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(), selectedRobotImage)
-        .then((icon) {
-      setState(() {
-        markerIcon = icon;
-      });
-    });
+      const ImageConfiguration(),
+      selectedRobotImage,
+    ).then(
+      (icon) {
+        setState(() {
+          markerIcon = icon;
+          loadMarkers();
+        });
+      },
+    );
   }
 
   void loadCoords() {
@@ -64,7 +80,7 @@ class MapScreenState extends State<MapScreen> {
 
     cameraPosition = CameraPosition(
       target: LatLng(latitude!, longitude!),
-      zoom: 18,
+      zoom: 19,
     );
   }
 
@@ -107,32 +123,47 @@ class MapScreenState extends State<MapScreen> {
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
             },
-            markers: {
-              Marker(
-                markerId: MarkerId("marker1"),
-                position: LatLng(0.5949246457564761, 41.61732984163952),
-                icon: markerIcon,
-              )
-            },
+            markers: markers,
           ),
           Align(
             alignment: Alignment.topRight,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: FloatingActionButton.extended(
-                onPressed: _showImageSelectionDialog,
+                onPressed: () {}, //_showImageSelectionDialog,
                 label: const Text('Select Robot'),
                 icon: const Icon(Icons.fire_truck),
+                heroTag: null,
               ),
             ),
           ),
-          _buildSelectedImage(),
+          //_buildSelectedImage(),
+          Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    FloatingActionButton.extended(
+                      onPressed: _sendKML,
+                      label: const Text('Send KML'),
+                      icon: const Icon(Icons.directions_boat),
+                      heroTag: null,
+                    ),
+                    if (showExtraButton)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: FloatingActionButton(
+                          onPressed: _sendOrbit,
+                          child: Icon(Icons.add),
+                          heroTag: null,
+                        ),
+                      ),
+                  ],
+                ),
+              ))
         ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _sendKML,
-        label: const Text('Send KML'),
-        icon: const Icon(Icons.directions_boat),
       ),
     );
   }
@@ -144,9 +175,17 @@ class MapScreenState extends State<MapScreen> {
         range: '1500',
         tilt: '60',
         heading: '0'));
+    setState(() {
+      showExtraButton = true;
+    });
   }
 
-  Widget _buildSelectedImage() {
+  Future<void> _sendOrbit() async {
+    final orbit = LGService.shared?.buildOrbit(selectedLand!);
+    await LGService.shared?.sendTour(orbit as LookAtEntity);
+  }
+
+  /*Widget _buildSelectedImage() {
     if (selectedRobotImage.isNotEmpty) {
       return Stack(
         children: [
@@ -193,10 +232,8 @@ class MapScreenState extends State<MapScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      width:
-                          200,
-                      height:
-                          200,
+                      width: 200,
+                      height: 200,
                       child: Image.asset(
                         robotImages[currentImageIndex],
                         fit: BoxFit.cover,
@@ -244,5 +281,5 @@ class MapScreenState extends State<MapScreen> {
         );
       },
     );
-  }
+  }*/
 }

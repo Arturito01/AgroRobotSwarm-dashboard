@@ -83,6 +83,36 @@ flutter:
     - assets/data/
     - assets/gallery/vineyard/
     - assets/robots/
+    - assets/kml/Argentine/
+    - assets/kml/Argentine/Cafayate/
+    - assets/kml/Argentine/Colonia_Caroya/
+    - assets/kml/Argentine/San_Carlos/
+    - assets/kml/Argentine/SanRafael/
+    - assets/kml/Argentine/Tunuyan/
+    - assets/kml/China/
+    - assets/kml/China/Cangzhou/
+    - assets/kml/China/Dezhou/
+    - assets/kml/China/Liaocheng/
+    - assets/kml/China/Shijiazhuang/
+    - assets/kml/China/Zengcun/
+    - assets/kml/EEUU/
+    - assets/kml/EEUU/California/
+    - assets/kml/EEUU/Carolina_Sur/
+    - assets/kml/EEUU/Florida/
+    - assets/kml/EEUU/Oregon/
+    - assets/kml/EEUU/Washington/
+    - assets/kml/Spain/
+    - assets/kml/Spain/Haro/
+    - assets/kml/Spain/Laguardia/
+    - assets/kml/Spain/Penafiel/
+    - assets/kml/Spain/VilafrancaPenedes/
+    - assets/kml/Spain/Lleida/
+    - assets/kml/Italy/
+    - assets/kml/Italy/Emilia/
+    - assets/kml/Italy/Empoli/
+    - assets/kml/Italy/Florencia/
+    - assets/kml/Italy/Roma/
+    - assets/kml/Italy/Verona/
     - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see

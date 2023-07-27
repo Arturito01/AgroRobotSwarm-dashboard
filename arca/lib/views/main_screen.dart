@@ -164,7 +164,7 @@ class _MainState extends State<MainScreen> {
                     ),
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MapScreen(viewModel: viewModel)));
+                          MaterialPageRoute(builder: (context) => MapScreen(viewModel: viewModel, robots: viewModel.getRobots())));
                     },
                     child: const Text(
                       'MAP',
@@ -259,19 +259,20 @@ class _MainState extends State<MainScreen> {
             Positioned.fill(
               child: RobotDetailPage(
                   robot: robots[0],
+                  land: viewModel.landSelected,
                   deletePressed: () {
                     _deleteRobot(robots[0].robotId);
                   }),
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
+        /*floatingActionButton: FloatingActionButton(
           onPressed: () {
             _showAddRobotDialog(context);
           },
           tooltip: 'Increment',
           child: const Icon(Icons.add),
-        ),
+        ),*/
       );
     } else {
       return Scaffold(
@@ -291,18 +292,19 @@ class _MainState extends State<MainScreen> {
             Positioned.fill(
                 child: RobotDetailPage(
                     robot: robots[currentPageIndex],
+                    land: viewModel.landSelected,
                     deletePressed: () {
                       _deleteRobot(robots[currentPageIndex].robotId);
                     })),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
+        /*floatingActionButton: FloatingActionButton(
           onPressed: () {
             _showAddRobotDialog(context);
           },
           tooltip: 'Increment',
           child: const Icon(Icons.add),
-        ),
+        ),*/
       );
     }
   }

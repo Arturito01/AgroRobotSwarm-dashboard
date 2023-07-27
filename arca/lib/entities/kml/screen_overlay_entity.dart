@@ -83,7 +83,7 @@ class ScreenOverlayEntity {
   factory ScreenOverlayEntity.logos() {
     return ScreenOverlayEntity(
       name: 'LogoARCA',
-      icon: 'https://i.imgur.com/KQp7RpE.png',
+      icon: 'https://i.imgur.com/zYdB77j.png',
       overlayX: 0,
       overlayY: 1,
       screenX: 0.02,

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>San Carlos 1.kml</name>
+	<StyleMap id="m_ylw-pushpin">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#s_ylw-pushpin</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#s_ylw-pushpin_hl</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="s_ylw-pushpin">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+	</Style>
+	<Style id="s_ylw-pushpin_hl">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+	</Style>
+	<Folder>
+		<name>San Carlos 1</name>
+		<open>1</open>
+		<Folder>
+			<name>Contorno</name>
+			<Placemark>
+				<name>C1</name>
+				<LookAt>
+					<longitude>-69.05187337499071</longitude>
+					<latitude>-33.76322135484838</latitude>
+					<altitude>0</altitude>
+					<heading>-66.59931938435224</heading>
+					<tilt>3.816398641383237</tilt>
+					<range>265.2805545361544</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#m_ylw-pushpin</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>-69.05197724426073,-33.7642512908555,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>C2</name>
+				<LookAt>
+					<longitude>-69.0519710671724</longitude>
+					<latitude>-33.76329603552011</latitude>
+					<altitude>0</altitude>
+					<heading>-66.59042371204234</heading>
+					<tilt>4.653475420475185</tilt>
+					<range>234.9345574964269</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#m_ylw-pushpin</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>-69.05219960769465,-33.76414967696329,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>C3</name>
+				<LookAt>
+					<longitude>-69.0519710671724</longitude>
+					<latitude>-33.76329603552011</latitude>
+					<altitude>0</altitude>
+					<heading>-66.59042371204234</heading>
+					<tilt>4.653475420475185</tilt>
+					<range>234.9345574964269</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#m_ylw-pushpin</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>-69.05160916453255,-33.76286783993578,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>C4</name>
+				<LookAt>
+					<longitude>-69.05197106702647</longitude>
+					<latitude>-33.76329603555083</latitude>
+					<altitude>0</altitude>
+					<heading>-66.59042371187789</heading>
+					<tilt>4.653475420351459</tilt>
+					<range>234.9345562787576</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#m_ylw-pushpin</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>-69.05139615323736,-33.76297251721686,0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder>
+			<name>Puntos</name>
+		</Folder>
+	</Folder>
+</Document>
+</kml>

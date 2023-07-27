@@ -162,7 +162,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           alignment: Alignment.bottomCenter,
           child: ElevatedButton(
             onPressed: () {
-              LGService.shared?.sendKMLToLastScreen(kml, selectedImage);
+              //LGService.shared?.sendKMLToLastScreen(kml, selectedImage);
             },
             child: const Text('Send KML'),
           ),

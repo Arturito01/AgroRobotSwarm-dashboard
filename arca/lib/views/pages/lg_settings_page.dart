@@ -9,7 +9,7 @@ class LGSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    LGService.shared?.setLogos();
       return SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),

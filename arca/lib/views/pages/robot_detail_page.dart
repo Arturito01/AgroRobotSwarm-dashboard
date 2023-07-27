@@ -1,17 +1,20 @@
+import 'package:arca/entities/kml/kml_balloon.dart';
+import 'package:arca/services/lg_service.dart';
 import 'package:arca/utils/constants.dart';
 import 'package:arca/views/robot_instructions_screen.dart';
-
 import 'package:flutter/material.dart';
 
 import '../../model_views/constant_view_model.dart';
+import '../../models/land.dart';
 import '../../models/robot.dart';
 
 class RobotDetailPage extends StatefulWidget {
   final Robot? robot;
+  final Land? land;
   final Function()? deletePressed;
 
   const RobotDetailPage(
-      {Key? key, required this.robot, required this.deletePressed})
+      {Key? key, required this.robot,required this.land, required this.deletePressed})
       : super(key: key);
 
   @override
@@ -39,6 +42,23 @@ class _RobotDetailPageState extends State<RobotDetailPage> {
             widget.robot?.name ?? 'unknown',
             style: const TextStyle(color: Colors.white),
           ),
+          actions: [
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: FloatingActionButton.extended(
+                  backgroundColor: info,
+                  onPressed: () {
+                    final kml = KMLBalloonEntity(name: "robot", robot: robot, land: widget.land);
+                    LGService.shared?.sendKMLToSlave(LGService.shared!.lastScreen, kml.body);
+                  },
+                  label: const Text('Send to LG'),
+                  icon: const Icon(Icons.screen_share_outlined),
+                ),
+              ),
+            ),
+          ],
         ),
         body: body(robot, context));
   }

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:ssh2/ssh2.dart';
 
 import '../../entities/ssh_entity.dart';
-import '../../services/storage_service.dart';
 import '../../services/ssh_service.dart';
+import '../../services/storage_service.dart';
 import '../../utils/constants.dart';
 
 class ConnectionSettings extends StatefulWidget {
   final void Function(bool, SSHClient?) onConnectionChanged;
-  const ConnectionSettings({Key? key, required this.onConnectionChanged}) : super(key: key);
+  const ConnectionSettings({Key? key, required this.onConnectionChanged})
+      : super(key: key);
 
   @override
   _ConnectionSettingsState createState() => _ConnectionSettingsState();
@@ -28,6 +29,7 @@ class _ConnectionSettingsState extends State<ConnectionSettings> {
     super.initState();
     loadSavedSettings();
   }
+
   bool connected = false;
 
   Future<void> loadSavedSettings() async {
@@ -158,29 +160,30 @@ class _ConnectionSettingsState extends State<ConnectionSettings> {
                           ipAddress,
                           port.toString(),
                         );
-
                         try {
                           await sshService.connect(connectionSettings);
                           setState(() {
                             connected = true;
                           });
-                          const snackBar = SnackBar(content: Text('¡Connection successful!'));
+                          const snackBar = SnackBar(
+                              content: Text('¡Connection successful!'));
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          widget.onConnectionChanged(connected, sshService.client);
+                          widget.onConnectionChanged(
+                              connected, sshService.client);
                         } catch (e) {
                           print('Connection error : $e');
                           setState(() {
                             connected = false;
                           });
-                          const snackBar = SnackBar(content: Text('¡Connection error'));
+                          const snackBar =
+                              SnackBar(content: Text('¡Connection error'));
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           widget.onConnectionChanged(connected, null);
-
                         }
                       },
                       child: const Text('Connect'),
                     ),
-                            ],
+                  ],
                 ),
               ),
             ),
