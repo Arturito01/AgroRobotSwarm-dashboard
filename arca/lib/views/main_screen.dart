@@ -1,18 +1,18 @@
+import 'package:arca/model_views/constant_view_model.dart';
+import 'package:arca/utils/constants.dart';
 import 'package:arca/views/admin_screen.dart';
 import 'package:arca/views/field_selection_screen.dart';
 import 'package:arca/views/pages/empty_page.dart';
 import 'package:arca/views/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:arca/model_views/constant_view_model.dart';
-import 'package:arca/utils/constants.dart';
-import 'package:ssh2/ssh2.dart';
+
 import '../models/robot.dart';
-import 'pages/robot_detail_page.dart';
 import 'calendar_screen.dart';
 import 'gallery_screen.dart';
 import 'global_info_screen.dart';
 import 'info_screen.dart';
 import 'map_screen.dart';
+import 'pages/robot_detail_page.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -30,7 +30,12 @@ class _MainState extends State<MainScreen> {
   String bodyContent = 'Main';
 
   Future<void> _incrementCounter(String robotName) async {
-    await viewModel.addNewRobot(robotName, viewModel.countrySelected!.id, viewModel.citySelected!.id,viewModel.landSelected!.id, viewModel.getRobots().length + 1);
+    await viewModel.addNewRobot(
+        robotName,
+        viewModel.countrySelected!.id,
+        viewModel.citySelected!.id,
+        viewModel.landSelected!.id,
+        viewModel.getRobots().length + 1);
     setState(() {});
   }
 
@@ -136,7 +141,8 @@ class _MainState extends State<MainScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => GalleryScreen()));
+                              builder: (context) =>
+                                  GalleryScreen(viewModel: viewModel)));
                     },
                     child: const Text(
                       'GALLERY',
@@ -163,8 +169,12 @@ class _MainState extends State<MainScreen> {
                       textStyle: const TextStyle(fontSize: 20),
                     ),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MapScreen(viewModel: viewModel, robots: viewModel.getRobots())));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MapScreen(
+                                  viewModel: viewModel,
+                                  robots: viewModel.getRobots())));
                     },
                     child: const Text(
                       'MAP',
@@ -194,7 +204,8 @@ class _MainState extends State<MainScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CalendarScreen(robots: viewModel.getRobots())));
+                              builder: (context) => CalendarScreen(
+                                  robots: viewModel.getRobots())));
                     },
                     child: const Text(
                       'HISTORY',
@@ -215,9 +226,7 @@ class _MainState extends State<MainScreen> {
               MaterialPageRoute(
                   builder: (context) => FieldScreen(viewModel: viewModel)),
             );
-            setState(() {
-
-            });
+            setState(() {});
           },
         ),
         IconButton(

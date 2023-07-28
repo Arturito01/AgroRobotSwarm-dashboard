@@ -174,6 +174,7 @@ fi
   }
 
   Future<void> sendKMLToSlave(int screen, String content) async {
+
     try {
       await _client
           .execute("echo '$content' > /var/www/html/kml/slave_$screen.kml");

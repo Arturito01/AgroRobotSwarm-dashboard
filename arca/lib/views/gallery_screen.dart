@@ -6,9 +6,13 @@ import 'package:arca/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../entities/kml/kml_entity.dart';
+import '../entities/kml/kml_image.dart';
+import '../model_views/constant_view_model.dart';
 
 class GalleryScreen extends StatefulWidget {
-  GalleryScreen({Key? key}) : super(key: key);
+  final ConstantViewModel viewModel;
+
+  GalleryScreen({Key? key,  required this.viewModel}) : super(key: key);
 
   @override
   _GalleryScreenState createState() => _GalleryScreenState();
@@ -162,7 +166,8 @@ class _GalleryScreenState extends State<GalleryScreen> {
           alignment: Alignment.bottomCenter,
           child: ElevatedButton(
             onPressed: () {
-              //LGService.shared?.sendKMLToLastScreen(kml, selectedImage);
+              final kml = KMLImageEntity(name: "Image", image: selectedImage, land: widget.viewModel.landSelected);
+              LGService.shared?.sendKMLToSlave(LGService.shared!.lastScreen, kml.body);
             },
             child: const Text('Send KML'),
           ),
