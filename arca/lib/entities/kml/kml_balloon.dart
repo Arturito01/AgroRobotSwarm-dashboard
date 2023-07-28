@@ -20,11 +20,6 @@ class KMLBalloonEntity {
 <Document>
 	<name>$name.kml</name>
 	<Style id="purple_paddle">
-		<IconStyle>
-			<Icon>
-				<href>https://raw.githubusercontent.com/yashrajbharti/kml-images/main/molten.png</href>
-			</Icon>
-		</IconStyle>
 		<BalloonStyle>
 			<text>\$[description]</text>
       <bgColor>ff1e1e1e</bgColor>
@@ -39,39 +34,45 @@ ffffffff
 <!-- Icon URL:
 http://maps.google.com/mapfiles/kml/paddle/purple-blank.png
  -->
-<table width="400" border="0" cellspacing="0" cellpadding="5">
-  <tr>
-    <td colspan="2" align="center">
-      <img src="https://i.imgur.com/GJWlzhh.png" alt="picture" width="150" height="150" />
-    </td>
-  </tr>
-  <catalog>
-    <cd>
-      <name><h1><font color='#00CC99'>${robot?.name}</font></h1></name>
-    </cd>
-  </catalog>
+
+<!-- Agregar márgenes a la tabla -->
+<div style="margin: 20px;">
+
+  <!-- Agregar bordes a la tabla -->
+  <table width="400" border="0" cellspacing="0" cellpadding="5" style="border-collapse: collapse;">
+
     <tr>
-    <td colspan="2" align="center">
-      <div style = "display:flex;">
-        <h1><font color='#00CC99'>Robot Name</font></h1>
-        <h1><font color='#00CC99'>${robot?.name}</font></h1>
-      </div>
-      <h1><font color='#00CC99'>${robot?.battery}</font></h1>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center">
-      <h1><font color='#00CC99'>${robot?.actualKg}</font></h1>
-      <h1><font color='#00CC99'>${robot?.actualDistance}</font></h1>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center">
-      <h1><font color='#00CC99'>${robot?.totalKg}</font></h1>
-      <h1><font color='#00CC99'>${robot?.totalDistance}</font></h1>
-    </td>
-  </tr>
-</table>]]></description>
+      <td colspan="2" align="center">
+        <img src="https://i.imgur.com/GJWlzhh.png" alt="picture" width="200" height="200" />
+      </td>
+    </tr>
+    <tr>
+      <td align="left"><h1><font color='#00CC99'>ROBOT NAME:</font></h1></td>
+      <td align="center"><h1><font color='#00CC99'>${robot?.name}</font></h1></td>
+    </tr>
+    <tr>
+      <td align="left"><h1><font color='#00CC99'>BATTERY:</font></h1></td>
+      <td align="center"><h1><font color='#00CC99'>${robot?.battery}</font></h1></td>
+    </tr>
+    <tr>
+      <td align="left"><h1><font color='#00CC99'>ACTUAL KG:</font></h1></td>
+      <td align="center"><h1><font color='#00CC99'>${robot?.actualKg}</font></h1></td>
+    </tr>
+        <tr>
+      <td align="left"><h1><font color='#00CC99'>TOTAL KG:</font></h1></td>
+      <td align="center"><h1><font color='#00CC99'>${robot?.totalKg}</font></h1></td>
+    </tr>
+    <tr>
+      <td align="left"><h1><font color='#00CC99'>ACTUAL KM:</font></h1></td>
+      <td align="center"><h1><font color='#00CC99'>${robot?.actualDistance}</font></h1></td>
+    </tr>
+    <tr>
+      <td align="left"><h1><font color='#00CC99'>TOTAL KM:</font></h1></td>
+      <td align="center"><h1><font color='#00CC99'>${robot?.totalDistance}</font></h1></td>
+    </tr>
+  </table>
+</div>
+]]></description>
 		<LookAt>
 			<longitude>${land?.long}</longitude>
 			<latitude>${land?.lat}</latitude>
