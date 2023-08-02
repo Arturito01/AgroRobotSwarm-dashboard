@@ -1,5 +1,6 @@
 import 'package:arca/entities/kml/kml_balloon.dart';
 import 'package:arca/services/lg_service.dart';
+import 'package:arca/services/ssh_service.dart';
 import 'package:arca/utils/constants.dart';
 import 'package:arca/views/robot_instructions_screen.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,10 @@ class RobotDetailPage extends StatefulWidget {
   final Function()? deletePressed;
 
   const RobotDetailPage(
-      {Key? key, required this.robot,required this.land, required this.deletePressed})
+      {Key? key,
+      required this.robot,
+      required this.land,
+      required this.deletePressed})
       : super(key: key);
 
   @override
@@ -43,28 +47,41 @@ class _RobotDetailPageState extends State<RobotDetailPage> {
             style: const TextStyle(color: Colors.white),
           ),
           actions: [
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: FloatingActionButton.extended(
-                  backgroundColor: info,
-                  onPressed: () {
-                    final kml = KMLBalloonEntity(name: "robot", robot: robot, land: widget.land);
-                    LGService.shared?.sendKMLToSlave(LGService.shared!.lastScreen, kml.body);
-                  },
-                  label: const Text('Send to LG'),
-                  icon: const Icon(Icons.screen_share_outlined),
-                ),
-              ),
-            ),
+            Container(
+                margin: EdgeInsets.only(right: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      SSHService.shared.connected
+                          ? "Connected"
+                          : "Disconnected",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: SSHService.shared.connected
+                            ? Colors.green
+                            : Colors.red,
+                      ),
+                    ),
+                    SizedBox(
+                      width: defaultPadding,
+                    ),
+                    Icon(
+                      Icons.circle,
+                      color: SSHService.shared.connected
+                          ? Colors.green
+                          : Colors.red,
+                      size: 20.0,
+                    ),
+                  ],
+                )),
           ],
         ),
-        body: body(robot, context));
+        body: body(robot, context, widget.land));
   }
 }
 
-Widget body(Robot? robot, BuildContext context) {
+Widget body(Robot? robot, BuildContext context, Land? land) {
   return Stack(
     children: <Widget>[
       Positioned(
@@ -189,7 +206,7 @@ Widget body(Robot? robot, BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     const Text(
-                      'CURRENT DISTANCE',
+                      'CURRENT KM',
                       style: TextStyle(color: Colors.black, fontSize: 20),
                     ),
                     const SizedBox(width: 60),
@@ -358,7 +375,7 @@ Widget body(Robot? robot, BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     const Text(
-                      'TOTAL DISTANCE',
+                      'TOTAL KM',
                       style: TextStyle(color: Colors.black, fontSize: 20),
                     ),
                     const SizedBox(width: 60),
@@ -375,36 +392,31 @@ Widget body(Robot? robot, BuildContext context) {
           ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
             child: Container(
-                width: 450,
-                height: 50,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: <Color>[
-                      infoBars,
-                      info,
-                    ],
-                  ),
+              width: 450,
+              height: 50,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: <Color>[
+                    infoBars,
+                    info,
+                  ],
                 ),
-                // child: TextButton(
+              ),
+              child: TextButton(
                 child: const Center(
                   child: Text(
-                    'GO TO UBI TRACKER',
+                    'SEND TO LG',
                     style: TextStyle(color: Colors.black, fontSize: 20),
                   ),
-                )
-
-                //   onPressed: () {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //         builder: (context) => RobotInstructionsScreen(
-                //           robot: robots[robot?.id ?? 999],
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // ),
                 ),
+                onPressed: () {
+                  final kml =
+                      KMLBalloonEntity(name: "robot", robot: robot, land: land);
+                  LGService.shared
+                      ?.sendKMLToSlave(LGService.shared!.lastScreen, kml.body);
+                },
+              ),
+            ),
           ),
           const SizedBox(
             height: defaultPadding,

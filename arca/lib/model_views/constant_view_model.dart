@@ -1,4 +1,5 @@
 import 'package:arca/models/lands_data.dart';
+
 import '../models/city.dart';
 import '../models/country.dart';
 import '../models/land.dart';
@@ -6,7 +7,8 @@ import '../models/robot.dart';
 import '../services/db_helper.dart';
 
 class ConstantViewModel {
-  Future<void> addNewRobot(String name, int countryId, int cityId, int landId, int id) async {
+  Future<void> addNewRobot(
+      String name, int countryId, int cityId, int landId, int id) async {
     await DBProvider.addNewRobot(name, countryId, cityId, landId, id);
   }
 
@@ -15,8 +17,8 @@ class ConstantViewModel {
   }
 
   List<Robot> getRobots() {
-
-    return DBProvider.getRobots(countrySelected?.id, citySelected?.id, landSelected?.id);
+    return DBProvider.getRobots(
+        countrySelected?.id, citySelected?.id, landSelected?.id);
   }
 
   late List<Country> countries;
@@ -44,13 +46,27 @@ class ConstantViewModel {
       landSelected = lands[0];
     }
   }
-  Country getCountryById(int id){
+  Country getCountryById(int id) {
     return countries[id];
   }
-  City getCityById(int id){
+
+  City getCityById(int id) {
     return cities[id];
   }
-  Land getLandById(int id){
+
+  Land getLandById(int id) {
     return lands[id];
+  }
+
+  void setCountry(Country country) {
+    countrySelected = country;
+  }
+
+  void setCity(City city) {
+    citySelected = city;
+  }
+
+  void setLand(Land land) {
+    landSelected = land;
   }
 }

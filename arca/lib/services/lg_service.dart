@@ -1,4 +1,5 @@
 import 'package:arca/entities/kml/look_at_entity.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ssh2/ssh2.dart';
 
 import '../entities/kml/kml_entity.dart';
@@ -217,17 +218,18 @@ fi
     await _client.execute(query);
   }
 
-  String buildOrbit(Land land) {
+  /*String buildOrbit(Land land) {
     final lookAt = LookAtEntity(
       lng: land.long,
       lat: land.lat,
       range: '1500',
-      tilt: '60',
+      zoom: ,
+      tilt: 60,
       heading: '0',
     );
 
     return Orbit.buildOrbit(Orbit.generateOrbitTag(lookAt));
-  }
+  }*/
 
   Future<void> sendOrbit(String tourKml, String tourName) async {
     final fileName = '$tourName.kml';
@@ -278,11 +280,14 @@ fi
     await _client.execute('echo "$_url/$fileName" > /var/www/html/kmls.txt');
   }
 
-  Future<void> sendTour(LookAtEntity lookAt) async {
-    await query('flytoview=${lookAt.linearTag}');
+  Future<void> sendTour(double latitude, double longitude, double zoom, double tilt,
+      double bearing) async {
+    await query('flytoview=${LookAtEntity.lookAtLinear(latitude, longitude, zoom, tilt, bearing)}');
   }
 
   Future<void> query(String content) async {
     await _client.execute('echo "$content" > /tmp/query.txt');
   }
+
+
 }

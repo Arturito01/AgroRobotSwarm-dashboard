@@ -14,7 +14,7 @@ class LookAtEntity {
   String range;
 
   /// Property that defines the look at `tilt`.
-  String tilt;
+  double tilt;
 
   /// Property that defines the look at `heading`.
   String heading;
@@ -24,12 +24,15 @@ class LookAtEntity {
   /// Defaults to `relativeToGround`.
   String altitudeMode;
 
+  double zoom;
+
   LookAtEntity(
       {required this.lng,
       required this.lat,
       required this.range,
       required this.tilt,
       required this.heading,
+      required this.zoom,
       this.altitude = 0,
       this.altitudeMode = 'relativeToGround'});
 
@@ -83,6 +86,12 @@ class LookAtEntity {
   /// )
   /// lookAt.lineadTag => '<LookAt><longitude>-74</longitude><latitude>30</latitude><altitude>0</altitude><range>1492.66</range><tilt>45</tilt><heading>0</heading><gx:altitudeMode>relativeToGround</gx:altitudeMode></LookAt>'
   /// ```
+
+
+  static String lookAtLinear(double latitude, double longitude, double zoom,
+      double tilt, double bearing) =>
+      '<LookAt><longitude>$longitude</longitude><latitude>$latitude</latitude><range>$zoom</range><tilt>$tilt</tilt><heading>$bearing</heading><gx:altitudeMode>relativeToGround</gx:altitudeMode></LookAt>';
+
   String get linearTag =>
       '<LookAt><longitude>$lng</longitude><latitude>$lat</latitude><altitude>$altitude</altitude><range>$range</range><tilt>$tilt</tilt><heading>$heading</heading><gx:altitudeMode>$altitudeMode</gx:altitudeMode></LookAt>';
 
@@ -104,6 +113,7 @@ class LookAtEntity {
     return LookAtEntity(
         lng: map['lng'],
         lat: map['lat'],
+        zoom: map['zoom'],
         altitude: map['altitude'],
         range: map['range'],
         tilt: map['tilt'],

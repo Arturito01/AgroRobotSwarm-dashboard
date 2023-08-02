@@ -1,7 +1,7 @@
 import 'package:arca/model_views/constant_view_model.dart';
 import 'package:arca/utils/constants.dart';
 import 'package:arca/views/admin_screen.dart';
-import 'package:arca/views/field_selection_screen.dart';
+import 'package:arca/views/land_selection_screen.dart';
 import 'package:arca/views/pages/empty_page.dart';
 import 'package:arca/views/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,16 +28,6 @@ class _MainState extends State<MainScreen> {
       NavigationDestinationLabelBehavior.alwaysShow;
   String robotName = "";
   String bodyContent = 'Main';
-
-  Future<void> _incrementCounter(String robotName) async {
-    await viewModel.addNewRobot(
-        robotName,
-        viewModel.countrySelected!.id,
-        viewModel.citySelected!.id,
-        viewModel.landSelected!.id,
-        viewModel.getRobots().length + 1);
-    setState(() {});
-  }
 
   Future<void> _deleteRobot(int robotId) async {
     await viewModel.deleteRobot(robotId);
@@ -91,15 +81,15 @@ class _MainState extends State<MainScreen> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text("YOU DON'T HAVE ROBOTS"),
+                              title: const Text("YOU DON'T HAVE ROBOTS"),
                               content:
-                                  Text('Add robots on the bottom right page'),
+                                  const Text('Add robots on the bottom right page'),
                               actions: [
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Text('Cerrar'),
+                                  child: const Text('Close'),
                                 ),
                               ],
                             );
@@ -215,19 +205,51 @@ class _MainState extends State<MainScreen> {
                 ],
               ),
             ),
-            const SizedBox(width: 480),
+            const SizedBox(width: 30),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: Stack(
+                children: <Widget>[
+                  Positioned.fill(
+                    child: Container(
+                      decoration: const BoxDecoration(color: notSelected),
+                    ),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.all(16.0),
+                      textStyle: const TextStyle(fontSize: 20),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LandSelectionScreen(
+                                  country: viewModel.countrySelected,
+                                  city: viewModel.citySelected,
+                                  land: viewModel.landSelected,
+                                  applyChanges: (country, city, land){
+                                    setState(() {
+                                      viewModel.setCountry(country);
+                                      viewModel.setCity(city);
+                                      viewModel.setLand(land);
+                                    });
+                                  },
+                                  countryList: viewModel.countries,
+                                  cityList: viewModel.cities,
+                                  landList: viewModel.lands)));
+                    },
+                    child: const Text(
+                      'LAND SELECTION',
+                      style: TextStyle(color: textNotSelected),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 340),
           ],
-        ),
-        IconButton(
-          icon: const Icon(Icons.south_america, color: Colors.white, size: 30),
-          onPressed: () async {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => FieldScreen(viewModel: viewModel)),
-            );
-            setState(() {});
-          },
         ),
         IconButton(
           icon: const Icon(Icons.info, color: Colors.white, size: 30),

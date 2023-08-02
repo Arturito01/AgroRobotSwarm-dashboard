@@ -12,7 +12,7 @@ import '../model_views/constant_view_model.dart';
 class GalleryScreen extends StatefulWidget {
   final ConstantViewModel viewModel;
 
-  GalleryScreen({Key? key,  required this.viewModel}) : super(key: key);
+  GalleryScreen({Key? key, required this.viewModel}) : super(key: key);
 
   @override
   _GalleryScreenState createState() => _GalleryScreenState();
@@ -70,6 +70,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           splashRadius: 24,
           onPressed: () {
             Navigator.pop(context);
+            LGService.shared?.clearKml(keepLogos: true);
           },
         ),
         actions: const [
@@ -166,8 +167,12 @@ class _GalleryScreenState extends State<GalleryScreen> {
           alignment: Alignment.bottomCenter,
           child: ElevatedButton(
             onPressed: () {
-              final kml = KMLImageEntity(name: "Image", image: selectedImage, land: widget.viewModel.landSelected);
-              LGService.shared?.sendKMLToSlave(LGService.shared!.lastScreen, kml.body);
+              final kml = KMLImageEntity(
+                  name: "Image",
+                  image: selectedImage,
+                  land: widget.viewModel.landSelected);
+              LGService.shared
+                  ?.sendKMLToSlave(LGService.shared!.lastScreen, kml.body);
             },
             child: const Text('Send KML'),
           ),

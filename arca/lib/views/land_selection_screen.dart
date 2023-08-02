@@ -1,57 +1,77 @@
-import 'package:flutter/material.dart';
-import 'package:arca/model_views/constant_view_model.dart';
 import 'package:arca/utils/constants.dart';
+import 'package:flutter/material.dart';
+
 import '../models/city.dart';
 import '../models/country.dart';
 import '../models/land.dart';
+import '../services/lg_service.dart';
 
-class FieldScreen extends StatefulWidget {
-  final ConstantViewModel viewModel;
-  const FieldScreen({Key? key, required this.viewModel}) : super(key: key);
+class LandSelectionScreen extends StatefulWidget {
+  final List<Country> countryList;
+  final List<City> cityList;
+  final List<Land> landList;
+  final Country? country;
+  final City? city;
+  final Land? land;
+  final Function(Country, City, Land) applyChanges;
+
+  const LandSelectionScreen(
+      {Key? key,
+      required this.country,
+      required this.city,
+      required this.land,
+      required this.applyChanges,
+      required this.countryList,
+      required this.cityList,
+      required this.landList})
+      : super(key: key);
 
   @override
-  _LandSelectionState createState() => _LandSelectionState();
+  _LandSelectionScreenState createState() => _LandSelectionScreenState();
 }
 
-class _LandSelectionState extends State<FieldScreen> {
-  Country? selectedCountry;
-  City? selectedCity;
-  Land? selectedLand;
+class _LandSelectionScreenState extends State<LandSelectionScreen> {
+  late Country selectedCountry;
+  late City selectedCity;
+  late Land selectedLand;
 
   @override
   void initState() {
     super.initState();
-    selectedCountry = widget.viewModel.countrySelected;
-    selectedCity = widget.viewModel.citySelected;
-    selectedLand = widget.viewModel.landSelected;
+    selectedCountry = widget.country!;
+    selectedCity = widget.city!;
+    selectedLand = widget.land!;
   }
 
   void _onCountryChanged(Country? country) {
-    setState(() {
-      selectedCountry = country;
-      selectedCity = widget.viewModel.cities.firstWhere((city) => city.country == selectedCountry);
-      selectedLand = widget.viewModel.lands.firstWhere((land) => land.city == selectedCity);
-      widget.viewModel.countrySelected = country;
-      widget.viewModel.citySelected = widget.viewModel.cities.firstWhere((city) => city.country == selectedCountry);
-      widget.viewModel.landSelected = widget.viewModel.lands.firstWhere((land) => land.city == selectedCity);
-    });
+    if (country != null) {
+      setState(() {
+        selectedCountry = country;
+        selectedCity = widget.cityList.firstWhere((city) => city.country == selectedCountry);
+        selectedLand = widget.landList.firstWhere((land) => land.city == selectedCity);
+      });
+    }
+  }
+
+  void applyChanges() {
+    widget.applyChanges(selectedCountry, selectedCity, selectedLand);
   }
 
   void _onCityChanged(City? city) {
-    setState(() {
-      selectedCity = city;
-      selectedLand = widget.viewModel.lands.firstWhere((land) => land.city == selectedCity);
-      widget.viewModel.citySelected = city;
-      widget.viewModel.landSelected = widget.viewModel.lands.firstWhere((land) => land.city == selectedCity);
-
-    });
+    if (city != null) {
+      setState(() {
+        selectedCity = city;
+        selectedLand = widget.landList.firstWhere((land) => land.city == selectedCity);
+      });
+    }
   }
 
   void _onLandChanged(Land? land) {
-    setState(() {
-      selectedLand = land;
-      widget.viewModel.landSelected = land;
-    });
+    if (land != null) {
+      setState(() {
+        selectedLand = land;
+      });
+    }
   }
 
   @override
@@ -115,7 +135,7 @@ class _LandSelectionState extends State<FieldScreen> {
                       value: selectedCountry,
                       onChanged: _onCountryChanged,
                       dropdownColor: selected,
-                      items: widget.viewModel.countries.map((Country country) {
+                      items: widget.countryList.map((Country country) {
                         return DropdownMenuItem<Country>(
                           value: country,
                           child: Text(
@@ -156,15 +176,15 @@ class _LandSelectionState extends State<FieldScreen> {
                       value: selectedCity,
                       onChanged: _onCityChanged,
                       dropdownColor: selected,
-                      items: widget.viewModel.cities
+                      items: widget.cityList
                           .where(
-                              (city) => city.country.id == selectedCountry?.id)
+                              (city) => city.country.id == selectedCountry.id)
                           .map((City city) {
                         return DropdownMenuItem<City>(
                           value: city,
                           child: Text(
                             city.city,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: textSelected,
                               fontSize: 20,
                             ),
@@ -200,14 +220,16 @@ class _LandSelectionState extends State<FieldScreen> {
                       value: selectedLand,
                       onChanged: _onLandChanged,
                       dropdownColor: selected,
-                      items: widget.viewModel.lands
-                          .where((land) => (land.city.id == selectedCity?.id) && (land.city.country.id == selectedCountry?.id))
+                      items: widget.landList
+                          .where((land) =>
+                              (land.city.id == selectedCity.id) &&
+                              (land.city.country.id == selectedCountry.id))
                           .map((Land land) {
                         return DropdownMenuItem<Land>(
                           value: land,
                           child: Text(
                             land.land,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: textSelected,
                               fontSize: 20,
                             ),
@@ -218,6 +240,44 @@ class _LandSelectionState extends State<FieldScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 25),
+              SizedBox(
+                height: 60,
+                width: 300,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: selected,
+                    border: Border.all(
+                      color: Colors.black38,
+                      width: 3,
+                    ),
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: const <BoxShadow>[
+                      BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.57),
+                        blurRadius: 5,
+                      ),
+                    ],
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: TextButton(
+                      child: const Text(
+                        "GO!",
+                        style: TextStyle(
+                          color: textSelected,
+                          fontSize: 20,
+                        ),
+                      ),
+                      onPressed: () {
+                        applyChanges();
+                        LGService.shared?.clearKml(keepLogos: true);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),

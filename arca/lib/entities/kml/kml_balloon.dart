@@ -21,12 +21,17 @@ class KMLBalloonEntity {
 	<name>$name.kml</name>
 	<Style id="purple_paddle">
 		<BalloonStyle>
+		 <IconStyle>
+    <scale>1.3</scale>
+    <Icon>
+      <href>https://raw.githubusercontent.com/Arturito01/AgroRobotSwarm-dashboard/main/arca/assets/robots/amiga.png</href>
+    </Icon>
+  </IconStyle>
 			<text>\$[description]</text>
       <bgColor>ff1e1e1e</bgColor>
 		</BalloonStyle>
 	</Style>
 	<Placemark id="0A7ACC68BF23CB81B354">
-		<name>"HIII"</name>
 		<Snippet maxLines="0"></Snippet>
 		<description><![CDATA[<!-- BalloonStyle background color:
 ffffffff
@@ -39,12 +44,15 @@ http://maps.google.com/mapfiles/kml/paddle/purple-blank.png
 <div style="margin: 20px;">
 
   <!-- Agregar bordes a la tabla -->
-  <table width="400" border="0" cellspacing="0" cellpadding="5" style="border-collapse: collapse;">
+  <table width="400" border="0" cellspacing="5" cellpadding="5" style="border-collapse: collapse;">
 
     <tr>
       <td colspan="2" align="center">
         <img src="https://i.imgur.com/GJWlzhh.png" alt="picture" width="200" height="200" />
       </td>
+    </tr>
+            <tr>
+      <td colspan="2" align="center"><br></td>
     </tr>
     <tr>
       <td align="left"><h1><font color='#00CC99'>ROBOT NAME:</font></h1></td>
@@ -54,6 +62,13 @@ http://maps.google.com/mapfiles/kml/paddle/purple-blank.png
       <td align="left"><h1><font color='#00CC99'>BATTERY:</font></h1></td>
       <td align="center"><h1><font color='#00CC99'>${robot?.battery}</font></h1></td>
     </tr>
+        <tr>
+      <td align="left"><h1><font color='#00CC99'>STATUS:</font></h1></td>
+      <td align="center"><h1><font color='#00CC99'>${robot?.active}</font></h1></td>
+    </tr>
+        <tr>
+      <td colspan="2" align="center"><br></td>
+    </tr>
     <tr>
       <td align="left"><h1><font color='#00CC99'>ACTUAL KG:</font></h1></td>
       <td align="center"><h1><font color='#00CC99'>${robot?.actualKg}</font></h1></td>
@@ -61,6 +76,9 @@ http://maps.google.com/mapfiles/kml/paddle/purple-blank.png
         <tr>
       <td align="left"><h1><font color='#00CC99'>TOTAL KG:</font></h1></td>
       <td align="center"><h1><font color='#00CC99'>${robot?.totalKg}</font></h1></td>
+    </tr>
+        <tr>
+      <td colspan="2" align="center"><br></td>
     </tr>
     <tr>
       <td align="left"><h1><font color='#00CC99'>ACTUAL KM:</font></h1></td>

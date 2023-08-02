@@ -21,6 +21,8 @@ class _ConnectionSettingsState extends State<ConnectionSettings> {
   final TextEditingController _ipController = TextEditingController();
   final TextEditingController _portController = TextEditingController();
 
+  bool _obscurePassword = true;
+
   final StorageService settingsService = StorageService.shared;
   final SSHService sshService = SSHService.shared;
 
@@ -91,10 +93,18 @@ class _ConnectionSettingsState extends State<ConnectionSettings> {
                     const SizedBox(height: 16.0),
                     TextFormField(
                       controller: _passwordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
+                      obscureText: _obscurePassword,
+                      decoration: InputDecoration(
                         labelText: 'Password',
                         prefixIcon: Icon(Icons.lock),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                          child: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
+                        ),
                         border: OutlineInputBorder(),
                       ),
                       style: const TextStyle(color: Colors.white),

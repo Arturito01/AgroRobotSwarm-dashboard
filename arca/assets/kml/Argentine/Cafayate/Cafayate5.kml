@@ -564,9 +564,6 @@
 				</Point>
 			</Placemark>
 		</Folder>
-		<Folder>
-			<name>Punts</name>
-		</Folder>
 	</Folder>
 </Document>
 </kml>

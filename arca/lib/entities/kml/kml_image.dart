@@ -34,7 +34,7 @@ http://maps.google.com/mapfiles/kml/paddle/purple-blank.png
 <table width="400" border="0" cellspacing="0" cellpadding="5">
   <tr>
     <td colspan="2" align="center">
-      <img src="https://raw.githubusercontent.com/Arturito01/AgroRobotSwarm-dashboard/main/arca/$image" alt="picture" width="500" height="500" />
+      <img src="https://raw.githubusercontent.com/Arturito01/AgroRobotSwarm-dashboard/main/arca/$image" alt="picture" width="620" height="410" />
     </td>
   </tr>
   

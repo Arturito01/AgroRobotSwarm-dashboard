@@ -3,6 +3,7 @@ import 'package:arca/models/robot.dart';
 import 'package:arca/services/csv_helper.dart';
 import 'package:arca/services/db_helper.dart';
 import 'package:arca/services/image_loader.dart';
+import 'package:arca/services/kml_service.dart';
 import 'package:arca/services/land_service.dart';
 import 'package:arca/services/lg_service.dart';
 import 'package:arca/services/ssh_service.dart';
@@ -31,20 +32,22 @@ void main() async {
   clearKML();
   ImageLoader.images =
       await ImageLoader.loadImagesFromFolder('assets/gallery/vineyard');
+  KMLService.loadKMLFromFile();
   runApp(const MyApp());
 }
 
-void setLogos() async{
-  try{
+void setLogos() async {
+  try {
     await LGService.shared?.setLogos();
-  }catch(e){
+  } catch (e) {
     print(e);
   }
 }
-void clearKML() async{
-  try{
+
+void clearKML() async {
+  try {
     await LGService.shared?.clearKml();
-  }catch(e){
+  } catch (e) {
     print(e);
   }
 }

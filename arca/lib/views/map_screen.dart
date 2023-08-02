@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:arca/entities/kml/look_at_entity.dart';
 import 'package:arca/services/lg_service.dart';
 import 'package:arca/utils/constants.dart';
+import 'package:arca/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -13,7 +13,8 @@ import '../models/robot.dart';
 class MapScreen extends StatefulWidget {
   final ConstantViewModel viewModel;
   final List<Robot> robots;
-  const MapScreen({Key? key, required this.viewModel, required this.robots}) : super(key: key);
+  const MapScreen({Key? key, required this.viewModel, required this.robots})
+      : super(key: key);
 
   @override
   State<MapScreen> createState() => MapScreenState();
@@ -24,27 +25,19 @@ class MapScreenState extends State<MapScreen> {
 
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
   late CameraPosition cameraPosition;
-  bool showExtraButton = false;
   Set<Marker> markers = {};
 
   String selectedRobotImage = 'assets/robots/amiga2.png';
 
-  List<String> robotImages = [
-    'assets/robots/amiga.png',
-    "assets/robots/Naïo Technologies.png",
-    "assets/robots/NEW_Burro_TRANSPARENCIES_01-Landscape.png"
-  ];
-  int currentImageIndex = 0;
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
     selectedLand = widget.viewModel.landSelected!;
     loadCoords();
     addCustomIcon();
   }
 
-  void loadMarkers(){
+  void loadMarkers() {
     for (int i = 0; i < widget.robots.length; i++) {
       Robot robot = widget.robots[i];
       Marker marker = Marker(
@@ -53,7 +46,7 @@ class MapScreenState extends State<MapScreen> {
         infoWindow: InfoWindow(title: robot.name),
         icon: markerIcon,
       );
-        markers.add(marker);
+      markers.add(marker);
     }
   }
 
@@ -82,6 +75,7 @@ class MapScreenState extends State<MapScreen> {
       target: LatLng(latitude!, longitude!),
       zoom: 19,
     );
+    _sendKML();
   }
 
   final Completer<GoogleMapController> _controller =
@@ -123,21 +117,16 @@ class MapScreenState extends State<MapScreen> {
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
             },
+            onCameraMove: (position) =>
+                setState(() => cameraPosition = position),
+            onCameraIdle: () async => await LGService.shared?.sendTour(
+                cameraPosition.target.latitude,
+                cameraPosition.target.longitude,
+                cameraPosition.zoom.zoomLG,
+                cameraPosition.tilt,
+                cameraPosition.bearing),
             markers: markers,
           ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: FloatingActionButton.extended(
-                onPressed: () {}, //_showImageSelectionDialog,
-                label: const Text('Select Robot'),
-                icon: const Icon(Icons.fire_truck),
-                heroTag: null,
-              ),
-            ),
-          ),
-          //_buildSelectedImage(),
           Align(
               alignment: Alignment.bottomRight,
               child: Padding(
@@ -146,20 +135,11 @@ class MapScreenState extends State<MapScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     FloatingActionButton.extended(
-                      onPressed: _sendKML,
-                      label: const Text('Send KML'),
+                      onPressed: _sendOrbit,
+                      label: const Text('Send Orbit'),
                       icon: const Icon(Icons.directions_boat),
                       heroTag: null,
                     ),
-                    if (showExtraButton)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: FloatingActionButton(
-                          onPressed: _sendOrbit,
-                          child: Icon(Icons.add),
-                          heroTag: null,
-                        ),
-                      ),
                   ],
                 ),
               ))
@@ -169,117 +149,16 @@ class MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _sendKML() async {
-    await LGService.shared?.sendTour(LookAtEntity(
-        lng: cameraPosition.target.longitude,
-        lat: cameraPosition.target.latitude,
-        range: '1500',
-        tilt: '60',
-        heading: '0'));
-    setState(() {
-      showExtraButton = true;
-    });
+    await LGService.shared?.sendTour(
+        cameraPosition.target.latitude,
+        cameraPosition.target.longitude,
+        cameraPosition.zoom.zoomLG,
+        cameraPosition.tilt,
+        cameraPosition.bearing);
   }
 
   Future<void> _sendOrbit() async {
-    final orbit = LGService.shared?.buildOrbit(selectedLand!);
-    await LGService.shared?.sendTour(orbit as LookAtEntity);
+    //final orbit = LGService.shared?.buildOrbit(selectedLand!);
+    //await LGService.shared?.sendTour(orbit as LookAtEntity);
   }
-
-  /*Widget _buildSelectedImage() {
-    if (selectedRobotImage.isNotEmpty) {
-      return Stack(
-        children: [
-          Center(
-            child: Image.asset(
-              selectedRobotImage,
-              fit: BoxFit.contain,
-            ),
-          ),
-          Positioned(
-            top: 40,
-            right: 16,
-            child: IconButton(
-              icon: const Icon(
-                Icons.close,
-                size: 50,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                setState(() {
-                  selectedRobotImage = '';
-                });
-              },
-            ),
-          ),
-        ],
-      );
-    } else {
-      return SizedBox.shrink();
-    }
-  }
-
-  void _showImageSelectionDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Select Robot Image'),
-              content: Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 200,
-                      height: 200,
-                      child: Image.asset(
-                        robotImages[currentImageIndex],
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.arrow_back),
-                          onPressed: () {
-                            setState(() {
-                              currentImageIndex = (currentImageIndex - 1) >= 0
-                                  ? (currentImageIndex - 1)
-                                  : (robotImages.length - 1);
-                            });
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.arrow_forward),
-                          onPressed: () {
-                            setState(() {
-                              currentImageIndex =
-                                  (currentImageIndex + 1) % robotImages.length;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          selectedRobotImage = robotImages[currentImageIndex];
-                          addCustomIcon();
-                        });
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Confirm Selection'),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }*/
 }

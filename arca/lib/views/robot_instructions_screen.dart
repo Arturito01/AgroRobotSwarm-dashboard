@@ -18,7 +18,6 @@ class _RobotInstructionsPageState extends State<RobotInstructionsPage> {
     'Instruction 1',
     'Instruction 2',
     'Instruction 3',
-    // Agrega aquí más instrucciones disponibles
   ];
 
   @override
@@ -63,10 +62,6 @@ class _RobotInstructionsPageState extends State<RobotInstructionsPage> {
                     ],
                   ),
                   actions: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: Text('Add Instructions'),
-                    ),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).pop(); // Cerrar el popup
