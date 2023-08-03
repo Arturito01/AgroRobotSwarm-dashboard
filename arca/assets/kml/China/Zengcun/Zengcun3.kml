@@ -33,7 +33,7 @@
 		<Folder>
 			<name>Zengcun3</name>
 			<Folder>
-				<name>Contorn</name>
+				<name>Contorno</name>
 				<Placemark>
 					<name>C1</name>
 					<LookAt>
@@ -102,6 +102,9 @@
 						<coordinates>114.7442870147269,38.24067812445923,0</coordinates>
 					</Point>
 				</Placemark>
+							</Folder>
+                			<Folder>
+                				<name>Puntos</name>
 				<Placemark>
 					<name>1</name>
 					<LookAt>

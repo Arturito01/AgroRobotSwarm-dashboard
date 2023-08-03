@@ -33,7 +33,7 @@
 	<Folder>
 		<name>Verona4</name>
 		<Folder>
-			<name>Contorn</name>
+			<name>Contorno</name>
 			<open>1</open>
 			<Placemark>
 				<name>C1</name>
@@ -105,7 +105,7 @@
 			</Placemark>
 		</Folder>
 		<Folder>
-			<name>Ruta</name>
+			<name>Puntos</name>
 			<open>1</open>
 			<Placemark>
 				<name>1</name>

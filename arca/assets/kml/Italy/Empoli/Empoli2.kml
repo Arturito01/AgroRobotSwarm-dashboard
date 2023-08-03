@@ -33,7 +33,7 @@
 	<Folder>
 		<name>Empoli2</name>
 		<Folder>
-			<name>Contorn</name>
+			<name>Contorno</name>
 			<Placemark>
 				<name>C1</name>
 				<Camera>
@@ -103,7 +103,7 @@
 				</Point>
 			</Placemark>
 			<Folder>
-				<name>Ruta</name>
+				<name>Puntos</name>
 				<open>1</open>
 				<Placemark>
 					<name>1</name>

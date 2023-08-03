@@ -35,7 +35,7 @@
 			<name>Shijiazhuang2</name>
 			<open>1</open>
 			<Folder>
-				<name>Contorn</name>
+				<name>Contorno</name>
 				<visibility>0</visibility>
 				<Placemark>
 					<name>C1</name>
@@ -129,7 +129,7 @@
 				</Placemark>
 			</Folder>
 			<Folder>
-				<name>Ruta</name>
+				<name>Puntos</name>
 				<Placemark>
 					<name>1</name>
 					<LookAt>

@@ -51,7 +51,7 @@
 		<Folder>
 			<name>Haro</name>
 			<Folder>
-				<name>contorno</name>
+				<name>Contorno</name>
 				<Placemark>
 					<name>1</name>
 					<LookAt>
@@ -122,7 +122,7 @@
 				</Placemark>
 			</Folder>
 			<Folder>
-				<name>Puntops</name>
+				<name>Puntos</name>
 			</Folder>
 			<Placemark>
 				<name>1</name>
@@ -1010,7 +1010,7 @@
 			</Placemark>
 		</Folder>
 		<Folder>
-			<name>contorno</name>
+			<name>Contorno</name>
 		</Folder>
 	</Folder>
 </Document>

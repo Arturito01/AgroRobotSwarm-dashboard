@@ -107,6 +107,9 @@
 					<coordinates>-65.93342836905978,-26.08145301784871,0</coordinates>
 				</Point>
 			</Placemark>
+					</Folder>
+            		<Folder>
+            			<name>Puntos</name>
 			<Placemark>
 				<name>1</name>
 				<LookAt>

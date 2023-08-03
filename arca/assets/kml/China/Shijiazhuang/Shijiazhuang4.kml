@@ -35,7 +35,7 @@
 			<name>Shijiazhuang4</name>
 			<visibility>0</visibility>
 			<Folder>
-				<name>Contorn</name>
+				<name>Contorno</name>
 				<visibility>0</visibility>
 				<Placemark>
 					<name>C1</name>
@@ -147,7 +147,7 @@
 				</Placemark>
 			</Folder>
 			<Folder>
-				<name>Ruta</name>
+				<name>Puntos</name>
 				<visibility>0</visibility>
 				<Placemark>
 					<name>1</name>

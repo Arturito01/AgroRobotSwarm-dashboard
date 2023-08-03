@@ -34,7 +34,7 @@
 		<name>Peñafiel</name>
 		<open>1</open>
 		<Folder>
-			<name>CONTORNO</name>
+			<name>Contorno</name>
 			<Placemark>
 				<name>C1</name>
 				<LookAt>
@@ -105,7 +105,7 @@
 			</Placemark>
 		</Folder>
 		<Folder>
-			<name>PUNTOS</name>
+			<name>Puntos</name>
 			<Placemark>
 				<name>P1</name>
 				<LookAt>
