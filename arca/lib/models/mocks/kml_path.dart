@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 
 class KMLPath {
   static String argentineCa1 = "assets/kml/Argentine/Cafayate/Cafayate1.kml";
@@ -297,11 +299,37 @@ class KMLPath {
     ];
   }
 
-  static List<File> getKMLFiles() {
+  static Future<List<File>> getKMLFiles() async{
     List<File> files = [];
     for (String path in _getKMLPaths()) {
-      files.add(File(path));
+      final appDir = await getFileFromAssets(path);
+      files.add(File(appDir.path));
     }
     return files;
+  }
+
+  static Future<File> getFileFromAssets(String path) async {
+
+    File? file = await existFile(path);
+    file ??= await createFile(path);
+
+    return file;
+  }
+
+  static Future<File> createFile(String path) async{
+    final byteData = await rootBundle.load(path);
+    final file = File('${(await getTemporaryDirectory()).path}/$path');
+    await file.create(recursive: true);
+    await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    return file;
+  }
+
+  static Future<File?> existFile(String path)async{
+    final file = File('${(await getTemporaryDirectory()).path}/$path');
+    if(await file.exists()){
+      return file;
+    } else{
+      return null;
+    }
   }
 }
