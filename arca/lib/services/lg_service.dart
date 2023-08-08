@@ -1,11 +1,9 @@
 import 'package:arca/entities/kml/look_at_entity.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ssh2/ssh2.dart';
 
 import '../entities/kml/kml_entity.dart';
 import '../entities/kml/orbit.dart';
 import '../entities/kml/screen_overlay_entity.dart';
-import '../models/land.dart';
 import 'file_service.dart';
 
 class LGService {
@@ -15,7 +13,6 @@ class LGService {
   static LGService? shared;
   final String _url = 'http://lg1:81';
   String localPath = "";
-
 
   int screenAmount = 5;
 
@@ -175,7 +172,6 @@ fi
   }
 
   Future<void> sendKMLToSlave(int screen, String content) async {
-
     try {
       await _client
           .execute("echo '$content' > /var/www/html/kml/slave_$screen.kml");
@@ -218,37 +214,6 @@ fi
     await _client.execute(query);
   }
 
-  /*String buildOrbit(Land land) {
-    final lookAt = LookAtEntity(
-      lng: land.long,
-      lat: land.lat,
-      range: '1500',
-      zoom: ,
-      tilt: 60,
-      heading: '0',
-    );
-
-    return Orbit.buildOrbit(Orbit.generateOrbitTag(lookAt));
-  }*/
-
-  Future<void> sendOrbit(String tourKml, String tourName) async {
-    final fileName = '$tourName.kml';
-
-    final kmlFile = await _fileService?.createFile(fileName, tourKml);
-    String? result = await _client.connectSFTP();
-
-    if (result == 'sftp_connected') {
-      await _client.sftpUpload(
-          path: kmlFile!.path,
-          toPath: '/var/www/html',
-          callback: (progress) {
-            print('Sent $progress');
-          });
-    }
-    await _client
-        .execute('echo "\n$_url/$fileName" >> /var/www/html/kmls.txt');
-  }
-
   Future<void> sendKMLToLastScreen(KMLEntity kml, String image) async {
     print("hii");
     final fileService = FileService();
@@ -280,14 +245,32 @@ fi
     await _client.execute('echo "$_url/$fileName" > /var/www/html/kmls.txt');
   }
 
-  Future<void> sendTour(double latitude, double longitude, double zoom, double tilt,
-      double bearing) async {
-    await query('flytoview=${LookAtEntity.lookAtLinear(latitude, longitude, zoom, tilt, bearing)}');
+  Future<void> sendTour(double latitude, double longitude, double zoom,
+      double tilt, double bearing) async {
+    await query(
+        'flytoview=${LookAtEntity.lookAtLinear(latitude, longitude, zoom, tilt, bearing)}');
   }
 
   Future<void> query(String content) async {
     await _client.execute('echo "$content" > /tmp/query.txt');
   }
 
+  String buildOrbit(LookAtEntity? lookAt) {
+    LookAtEntity? lookAtObj;
 
+    lookAtObj = lookAt;
+
+    return Orbit.buildOrbit(Orbit.generateOrbitTag(lookAtObj!));
+  }
+
+  Future<void> sendOrbit(String tourKml, String tourName) async {
+    final fileName = '$tourName.kml';
+
+    final kmlFile = await _fileService?.createFile(fileName, tourKml);
+    await _client.sftpUpload(path: '${kmlFile?.path}', toPath: '/var/www/html',callback: (progress) {
+      print('Sent $progress');
+    });
+
+    await _client.execute('echo "\n$_url/$fileName" >> /var/www/html/kmls.txt');
+  }
 }

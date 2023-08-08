@@ -30,26 +30,9 @@
 			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
 		</IconStyle>
 	</Style>
-	<Folder>
-		<name>Mis sitios</name>
-		<open>1</open>
-		<Style>
-			<ListStyle>
-				<listItemType>check</listItemType>
-				<ItemIcon>
-					<state>open</state>
-					<href>:/mysavedplaces_open.png</href>
-				</ItemIcon>
-				<ItemIcon>
-					<state>closed</state>
-					<href>:/mysavedplaces_closed.png</href>
-				</ItemIcon>
-				<bgColor>00ffffff</bgColor>
-				<maxSnippetLines>2</maxSnippetLines>
-			</ListStyle>
-		</Style>
+
 		<Folder>
-			<name>Haro</name>
+			<name>Haro 1</name>
 			<Folder>
 				<name>Contorno</name>
 				<Placemark>
@@ -1009,9 +992,6 @@
 				</Point>
 			</Placemark>
 		</Folder>
-		<Folder>
-			<name>Contorno</name>
-		</Folder>
-	</Folder>
+
 </Document>
 </kml>

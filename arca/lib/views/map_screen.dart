@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:arca/entities/kml/look_at_entity.dart';
 import 'package:arca/services/lg_service.dart';
 import 'package:arca/utils/constants.dart';
 import 'package:arca/utils/extensions.dart';
@@ -158,7 +159,15 @@ class MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _sendOrbit() async {
-    //final orbit = LGService.shared?.buildOrbit(selectedLand!);
-    //await LGService.shared?.sendTour(orbit as LookAtEntity);
+    final lookAt = LookAtEntity(
+        lng: cameraPosition.target.longitude,
+        lat: cameraPosition.target.latitude,
+        range: '0',
+        tilt: cameraPosition.tilt,
+        heading: '0',
+        zoom: cameraPosition.zoom.zoomLG);
+    final orbit = LGService.shared?.buildOrbit(lookAt);
+
+    await LGService.shared?.sendOrbit(orbit!, "Orbit");
   }
 }

@@ -29,23 +29,17 @@ class KMLPath {
   static String argentineSc5 =
       "assets/kml/Argentine/San_Carlos/San_Carlos5.kml";
 
-  static String argentineSr1 =
-      "assets/kml/Argentine/San_Rafael/San_Rafael1.kml";
-  static String argentineSr2 =
-      "assets/kml/Argentine/San_Rafael/San_Rafael2.kml";
-  static String argentineSr3 =
-      "assets/kml/Argentine/San_Rafael/San_Rafael3.kml";
-  static String argentineSr4 =
-      "assets/kml/Argentine/San_Rafael/San_Rafael4.kml";
-  static String argentineSr5 =
-      "assets/kml/Argentine/San_Rafael/San_Rafael5.kml";
+  static String argentineSr1 = "assets/kml/Argentine/SanRafael/San_Rafael1.kml";
+  static String argentineSr2 = "assets/kml/Argentine/SanRafael/San_Rafael2.kml";
+  static String argentineSr3 = "assets/kml/Argentine/SanRafael/San_Rafael3.kml";
+  static String argentineSr4 = "assets/kml/Argentine/SanRafael/San_Rafael4.kml";
+  static String argentineSr5 = "assets/kml/Argentine/SanRafael/San_Rafael5.kml";
 
   static String argentineTu1 = "assets/kml/Argentine/Tunuyan/Tunuyan1.kml";
   static String argentineTu2 = "assets/kml/Argentine/Tunuyan/Tunuyan2.kml";
   static String argentineTu3 = "assets/kml/Argentine/Tunuyan/Tunuyan3.kml";
   static String argentineTu4 = "assets/kml/Argentine/Tunuyan/Tunuyan4.kml";
   static String argentineTu5 = "assets/kml/Argentine/Tunuyan/Tunuyan5.kml";
-
 
   static String chinaCa1 = "assets/kml/China/Cangzhou/Cangzhou1.kml";
   static String chinaCa2 = "assets/kml/China/Cangzhou/Cangzhou2.kml";
@@ -137,7 +131,6 @@ class KMLPath {
   static String italyVe4 = "assets/kml/Italy/Verona/Verona4.kml";
   static String italyVe5 = "assets/kml/Italy/Verona/Verona5.kml";
 
-
   static String spainHa1 = "assets/kml/Spain/Haro/Haro1.kml";
   static String spainHa2 = "assets/kml/Spain/Haro/Haro2.kml";
   static String spainHa3 = "assets/kml/Spain/Haro/Haro3.kml";
@@ -162,11 +155,16 @@ class KMLPath {
   static String spainPe4 = "assets/kml/Spain/Penafiel/Penafiel4.kml";
   static String spainPe5 = "assets/kml/Spain/Penafiel/Penafiel5.kml";
 
-  static String spainVp1 = "assets/kml/Spain/VilafrancaPenedes/VilafrancaPenedes1.kml";
-  static String spainVp2 = "assets/kml/Spain/VilafrancaPenedes/VilafrancaPenedes2.kml";
-  static String spainVp3 = "assets/kml/Spain/VilafrancaPenedes/VilafrancaPenedes3.kml";
-  static String spainVp4 = "assets/kml/Spain/VilafrancaPenedes/VilafrancaPenedes4.kml";
-  static String spainVp5 = "assets/kml/Spain/VilafrancaPenedes/VilafrancaPenedes5.kml";
+  static String spainVp1 =
+      "assets/kml/Spain/VilafrancaPenedes/VilafrancaPenedes1.kml";
+  static String spainVp2 =
+      "assets/kml/Spain/VilafrancaPenedes/VilafrancaPenedes2.kml";
+  static String spainVp3 =
+      "assets/kml/Spain/VilafrancaPenedes/VilafrancaPenedes3.kml";
+  static String spainVp4 =
+      "assets/kml/Spain/VilafrancaPenedes/VilafrancaPenedes4.kml";
+  static String spainVp5 =
+      "assets/kml/Spain/VilafrancaPenedes/VilafrancaPenedes5.kml";
 
   static List<String> _getKMLPaths() {
     return [
