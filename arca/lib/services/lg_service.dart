@@ -1,18 +1,17 @@
+import 'dart:io';
+
 import 'package:arca/entities/kml/look_at_entity.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:ssh2/ssh2.dart';
 
 import '../entities/kml/kml_entity.dart';
-import '../entities/kml/orbit.dart';
 import '../entities/kml/screen_overlay_entity.dart';
-import 'file_service.dart';
 
 class LGService {
   final SSHClient _client;
-  FileService? _fileService;
   LGService(SSHClient client) : _client = client;
   static LGService? shared;
   final String _url = 'http://lg1:81';
-  String localPath = "";
 
   int screenAmount = 5;
 
@@ -181,15 +180,22 @@ fi
     }
   }
 
-  Future<void> sendKMLToMaster(int screen, String content) async {
-    try {
-      await _client.execute("echo '$content' > /var/www/html/camp.kml");
-      await _client
-          .execute("echo 'http://lg1:81/camp.kml' > /var/www/html/kmls.txt");
-    } catch (e) {
-      // ignore: avoid_print
-      print(e);
-    }
+  Future<void> sendKml(String kml) async {
+    const fileName = 'prova.kml';
+    await clearKml(keepLogos: true);
+
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/$fileName');
+    file.writeAsStringSync(kml);
+
+    await _client.connectSFTP();
+    await _client.sftpUpload(
+        path: file.path,
+        toPath: '/var/www/html',
+        callback: (progress) {
+          print('Sent $progress');
+        });
+    await _client.execute('echo "$_url/${fileName}" > /var/www/html/kmls.txt');
   }
 
   Future<void> clearKml({bool keepLogos = false}) async {
@@ -214,37 +220,6 @@ fi
     await _client.execute(query);
   }
 
-  Future<void> sendKMLToLastScreen(KMLEntity kml, String image) async {
-    print("hii");
-    final fileService = FileService();
-    final fileName = '${kml.name}.kml';
-
-    await clearKml();
-
-    image = (await fileService.createImage("image", image)) as String;
-    String? result = await _client.connectSFTP();
-    if (result == 'sftp_connected') {
-      await _client.sftpUpload(
-          path: image,
-          toPath: '/var/www/html',
-          callback: (progress) {
-            print('Sent $progress');
-          });
-    }
-
-    final kmlFile = await fileService.createFile(fileName, kml.body);
-    result = await _client.connectSFTP();
-    if (result == 'sftp_connected') {
-      await _client.sftpUpload(
-          path: kmlFile.path,
-          toPath: '/var/www/html',
-          callback: (progress) {
-            print('Sent $progress');
-          });
-    }
-    await _client.execute('echo "$_url/$fileName" > /var/www/html/kmls.txt');
-  }
-
   Future<void> sendTour(double latitude, double longitude, double zoom,
       double tilt, double bearing) async {
     await query(
@@ -255,22 +230,30 @@ fi
     await _client.execute('echo "$content" > /tmp/query.txt');
   }
 
-  String buildOrbit(LookAtEntity? lookAt) {
-    LookAtEntity? lookAtObj;
-
-    lookAtObj = lookAt;
-
-    return Orbit.buildOrbit(Orbit.generateOrbitTag(lookAtObj!));
-  }
-
-  Future<void> sendOrbit(String tourKml, String tourName) async {
+  Future<Object?> sendOrbit(String tourKml, String tourName) async {
     final fileName = '$tourName.kml';
 
-    final kmlFile = await _fileService?.createFile(fileName, tourKml);
-    await _client.sftpUpload(path: '${kmlFile?.path}', toPath: '/var/www/html',callback: (progress) {
-      print('Sent $progress');
-    });
+    print("ORBIT: $tourKml");
 
-    await _client.execute('echo "\n$_url/$fileName" >> /var/www/html/kmls.txt');
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/$fileName');
+    file.writeAsStringSync(tourKml);
+
+    await _client.connectSFTP();
+    await _client.sftpUpload(
+        path: file.path,
+        toPath: '/var/www/html',
+        callback: (progress) {
+          print('Sent $progress');
+        });
+    _client.execute(
+        "echo '\nhttp://lg1:81/${fileName}' >> /var/www/html/kmls.txt");
+
+    try {
+      return await _client.execute('echo "playtour=Orbit" > /tmp/query.txt');
+    } catch (e) {
+      print('Could not connect to host LG');
+      return Future.error(e);
+    }
   }
 }

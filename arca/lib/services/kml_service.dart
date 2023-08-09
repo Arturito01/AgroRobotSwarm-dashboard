@@ -69,7 +69,6 @@ class KMLService {
                 cityName == element.city.city && landId == element.id);
             land.perimeter = perimeterList;
             land.path = pathList;
-            print(land);
           } catch (error) {
             print(error);
           }

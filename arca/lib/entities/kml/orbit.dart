@@ -1,46 +1,39 @@
-import 'look_at_entity.dart';
+import 'package:arca/entities/kml/look_at_entity.dart';
 
-/// Class that defines the `orbit` entity, which contains its properties and
-/// methods.
-class Orbit {
-  /// Generates the `orbit` tag based on the given [lookAt].
-  static String generateOrbitTag(LookAtEntity lookAt) {
-    String content = '';
-
-    double heading = double.parse(lookAt.heading);
+class OrbitEntity {
+  static tag(LookAtEntity marker) {
+    double heading = double.parse(marker.heading);
     int orbit = 0;
+    String content = '';
+    String range = '100';
+    double altitude = marker.altitude + 100;
 
     while (orbit <= 36) {
-      if (heading >= 360) {
-        heading -= 360;
-      }
-
+      if (heading >= 360) heading -= 360;
       content += '''
             <gx:FlyTo>
               <gx:duration>1.2</gx:duration>
               <gx:flyToMode>smooth</gx:flyToMode>
               <LookAt>
-                  <longitude>${lookAt.lng}</longitude>
-                  <latitude>${lookAt.lat}</latitude>
+                  <longitude>${marker.lng}</longitude>
+                  <latitude>${marker.lat}</latitude>
                   <heading>$heading</heading>
-                  <tilt>60</tilt>
-                  <range>${lookAt.range}</range>
-                  <gx:fovy>60</gx:fovy>
-                  <altitude>${lookAt.altitude}</altitude>
-                  <gx:altitudeMode>${lookAt.altitudeMode}</gx:altitudeMode>
+                  <tilt>0</tilt>
+                  <range>${range}</range>
+                  <gx:fovy>60</gx:fovy> 
+                  <altitude>${altitude}</altitude> 
+                  <gx:altitudeMode>${marker.altitudeMode}</gx:altitudeMode>
               </LookAt>
             </gx:FlyTo>
           ''';
-
       heading += 10;
       orbit += 1;
     }
-
     return content;
   }
 
-  /// Builds and returns the `orbit` KML based on the given [content].
-  static String buildOrbit(String content) => '''
+  static buildOrbit(String content) {
+    String kmlOrbit = '''
 <?xml version="1.0" encoding="UTF-8"?>
       <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
         <gx:Tour>
@@ -51,4 +44,6 @@ class Orbit {
         </gx:Tour>
       </kml>
     ''';
+    return kmlOrbit;
+  }
 }

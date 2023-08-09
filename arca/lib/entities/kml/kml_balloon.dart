@@ -40,10 +40,8 @@ ffffffff
 http://maps.google.com/mapfiles/kml/paddle/purple-blank.png
  -->
 
-<!-- Agregar márgenes a la tabla -->
 <div style="margin: 20px;">
 
-  <!-- Agregar bordes a la tabla -->
   <table width="400" border="0" cellspacing="5" cellpadding="5" style="border-collapse: collapse;">
 
     <tr>

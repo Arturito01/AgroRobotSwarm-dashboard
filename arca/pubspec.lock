@@ -323,6 +323,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_timer_widget:
+    dependency: "direct main"
+    description:
+      name: flutter_timer_widget
+      sha256: "133a5509aca0aad4631d40a096f3dcd4be2d677929a73d07c9897b583a047997"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   flutter_web_plugins:
     dependency: transitive
     description: flutter

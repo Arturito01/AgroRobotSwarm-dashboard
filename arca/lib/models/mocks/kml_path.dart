@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -299,7 +300,7 @@ class KMLPath {
     ];
   }
 
-  static Future<List<File>> getKMLFiles() async{
+  static Future<List<File>> getKMLFiles() async {
     List<File> files = [];
     for (String path in _getKMLPaths()) {
       final appDir = await getFileFromAssets(path);
@@ -309,26 +310,26 @@ class KMLPath {
   }
 
   static Future<File> getFileFromAssets(String path) async {
-
     File? file = await existFile(path);
     file ??= await createFile(path);
-
+    //File file = await createFile(path);
     return file;
   }
 
-  static Future<File> createFile(String path) async{
+  static Future<File> createFile(String path) async {
     final byteData = await rootBundle.load(path);
     final file = File('${(await getTemporaryDirectory()).path}/$path');
     await file.create(recursive: true);
-    await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    await file.writeAsBytes(byteData.buffer
+        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
     return file;
   }
 
-  static Future<File?> existFile(String path)async{
+  static Future<File?> existFile(String path) async {
     final file = File('${(await getTemporaryDirectory()).path}/$path');
-    if(await file.exists()){
+    if (await file.exists()) {
       return file;
-    } else{
+    } else {
       return null;
     }
   }

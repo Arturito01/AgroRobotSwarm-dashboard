@@ -1,12 +1,18 @@
 import 'dart:async';
+import 'dart:collection';
+import 'dart:math';
 
 import 'package:arca/entities/kml/look_at_entity.dart';
+import 'package:arca/entities/kml/polygon_entity.dart';
+import 'package:arca/models/lands_data.dart';
+import 'package:arca/models/mocks/coordinarte_kml_model.dart';
 import 'package:arca/services/lg_service.dart';
 import 'package:arca/utils/constants.dart';
 import 'package:arca/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../entities/kml/orbit.dart';
 import '../model_views/constant_view_model.dart';
 import '../models/land.dart';
 import '../models/robot.dart';
@@ -29,43 +35,25 @@ class MapScreenState extends State<MapScreen> {
   Set<Marker> markers = {};
 
   String selectedRobotImage = 'assets/robots/amiga2.png';
+  Set<Polygon> _polygon = HashSet<Polygon>();
+  List<LatLng> perimeter = [];
+  List<LatLng> path = [];
 
   @override
   void initState() {
     super.initState();
     selectedLand = widget.viewModel.landSelected!;
-    loadCoords();
-    addCustomIcon();
-  }
-
-  void loadMarkers() {
-    for (int i = 0; i < widget.robots.length; i++) {
-      Robot robot = widget.robots[i];
-      Marker marker = Marker(
-        markerId: MarkerId("marker_$i"),
-        position: LatLng(selectedLand!.lat, selectedLand!.long),
-        infoWindow: InfoWindow(title: robot.name),
-        icon: markerIcon,
-      );
-      markers.add(marker);
+    selectedLand ??= LandSelection.lands.firstWhere(
+        (element) => element.city.city == "Lleida" && element.id == 0);
+    try {
+      print("Selected land is: $selectedLand\n\n");
+    } catch (e) {
+      print(e);
     }
+    loadCoords();
   }
 
-  void addCustomIcon() {
-    BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(),
-      selectedRobotImage,
-    ).then(
-      (icon) {
-        setState(() {
-          markerIcon = icon;
-          loadMarkers();
-        });
-      },
-    );
-  }
-
-  void loadCoords() {
+  void loadCoords() async {
     double? latitude;
     double? longitude;
 
@@ -77,6 +65,65 @@ class MapScreenState extends State<MapScreen> {
       zoom: 19,
     );
     _sendKML();
+    await _loadPolygon();
+    await _loadPath();
+  }
+
+  Future<void> _loadPolygon() async {
+    try {
+      for (CoordinateKmlModel coords in selectedLand!.perimeter) {
+        perimeter.add(LatLng(coords.longitude, coords.latitude));
+      }
+    } catch (e) {
+      print(e);
+    }
+    _polygon.add(Polygon(
+        polygonId: const PolygonId('1'),
+        points: perimeter,
+        fillColor: Colors.blue.withOpacity(0.1),
+        strokeColor: Colors.blue,
+        strokeWidth: 4));
+  }
+
+  Future<void> _loadPath() async {
+    for (CoordinateKmlModel coords in selectedLand!.path) {
+      path.add(LatLng(coords.longitude, coords.latitude));
+    }
+    await _sendPolygon();
+    await addCustomIcon();
+  }
+
+  Future<void> loadMarkers() async {
+    try {
+      for (int i = 0; i < widget.robots.length; i++) {
+        Robot robot = widget.robots[i];
+        Marker marker = Marker(
+          markerId: MarkerId("marker_$i"),
+          position: path[Random().nextInt(path.length)],
+          infoWindow: InfoWindow(title: robot.name),
+          icon: markerIcon,
+        );
+        markers.add(marker);
+        print("Markers: ${marker.position}\n");
+      }
+    } catch (e) {
+      print("NO PATH");
+      print(e);
+    }
+  }
+
+  Future<void> addCustomIcon() async {
+    await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(),
+      selectedRobotImage,
+    ).then(
+      (icon) {
+        setState(() {
+          markerIcon = icon;
+          loadMarkers();
+        });
+      },
+    );
   }
 
   final Completer<GoogleMapController> _controller =
@@ -118,6 +165,7 @@ class MapScreenState extends State<MapScreen> {
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
             },
+            polygons: _polygon,
             onCameraMove: (position) =>
                 setState(() => cameraPosition = position),
             onCameraIdle: () async => await LGService.shared?.sendTour(
@@ -129,7 +177,7 @@ class MapScreenState extends State<MapScreen> {
             markers: markers,
           ),
           Align(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment.bottomLeft,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
@@ -158,16 +206,22 @@ class MapScreenState extends State<MapScreen> {
         cameraPosition.bearing);
   }
 
+  Future<void> _sendPolygon() async {
+    final kml = PolygonEntity("Polygon", perimeter);
+    print("KML: ${kml.body}");
+    await LGService.shared?.sendKml(kml.body);
+  }
+
   Future<void> _sendOrbit() async {
     final lookAt = LookAtEntity(
         lng: cameraPosition.target.longitude,
         lat: cameraPosition.target.latitude,
-        range: '0',
+        range: '1500',
         tilt: cameraPosition.tilt,
         heading: '0',
         zoom: cameraPosition.zoom.zoomLG);
-    final orbit = LGService.shared?.buildOrbit(lookAt);
+    final orbit = OrbitEntity.buildOrbit(OrbitEntity.tag(lookAt));
 
-    await LGService.shared?.sendOrbit(orbit!, "Orbit");
+    await LGService.shared?.sendOrbit(orbit, "Orbit");
   }
 }

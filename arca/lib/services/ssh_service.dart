@@ -52,13 +52,15 @@ class SSHService {
   }
 
   Future<void> upload(String filePath) async {
+    String? result = await client.connectSFTP();
 
+    if (result == 'sftp_connected') {
       await client.sftpUpload(
           path: filePath,
           toPath: '/var/www/html',
           callback: (progress) {
             print('Sent $progress');
           });
-
+    }
   }
 }

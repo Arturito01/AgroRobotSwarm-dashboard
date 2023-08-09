@@ -103,23 +103,6 @@
 					<coordinates>-118.9690065817002,35.97512934376844,0</coordinates>
 				</Point>
 			</Placemark>
-			<Placemark>
-				<name>63</name>
-				<LookAt>
-					<longitude>-118.9686852744351</longitude>
-					<latitude>35.97534281461764</latitude>
-					<altitude>0</altitude>
-					<heading>62.1312748434507</heading>
-					<tilt>30.0005344857774</tilt>
-					<range>118.2140333572482</range>
-					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
-				</LookAt>
-				<styleUrl>#m_ylw-pushpin</styleUrl>
-				<Point>
-					<gx:drawOrder>1</gx:drawOrder>
-					<coordinates>-118.9683118553445,35.97529018526441,0</coordinates>
-				</Point>
-			</Placemark>
 		</Folder>
 		<Folder>
 			<name>Puntos</name>

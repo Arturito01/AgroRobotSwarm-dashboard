@@ -52,6 +52,7 @@ dependencies:
   xml: ^6.3.0
   image: ^4.0.17
   url_launcher: ^6.1.12
+  flutter_timer_widget: ^0.0.2
 
 dev_dependencies:
   flutter_test:
