@@ -17,7 +17,7 @@ class PolygonEntity {
     return '''
   <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
-<Style id="$name">
+  <Style id="$name">
     <LineStyle>
       <color>${style['lineStyle']['color']}</color>
       <width>10</width>
@@ -27,10 +27,10 @@ class PolygonEntity {
     </PolyStyle>
   </Style>
   <Placemark>
-    <name>The Pentagon</name>
+		<name>AREA</name>
+		<styleUrl>$name</styleUrl>
     <Polygon>
-      <extrude>1</extrude>
-      <altitudeMode>relativeToGround</altitudeMode>
+      <tesselate>1</tesselate><altitudeMode>relativeToGround</altitudeMode>
       <outerBoundaryIs>
         <LinearRing>
           <coordinates>
@@ -38,13 +38,6 @@ class PolygonEntity {
           </coordinates>
         </LinearRing>
       </outerBoundaryIs>
-      <innerBoundaryIs>
-        <LinearRing>
-          <coordinates>
-            ${this.coordsToString()}
-          </coordinates>
-        </LinearRing>
-      </innerBoundaryIs>
     </Polygon>
   </Placemark>
 </kml>

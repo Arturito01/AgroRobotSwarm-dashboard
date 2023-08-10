@@ -7,8 +7,10 @@ import 'package:arca/entities/kml/polygon_entity.dart';
 import 'package:arca/models/lands_data.dart';
 import 'package:arca/models/mocks/coordinarte_kml_model.dart';
 import 'package:arca/services/lg_service.dart';
+import 'package:arca/services/timer_service.dart';
 import 'package:arca/utils/constants.dart';
 import 'package:arca/utils/extensions.dart';
+import 'package:arca/utils/set_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -39,18 +41,55 @@ class MapScreenState extends State<MapScreen> {
   List<LatLng> perimeter = [];
   List<LatLng> path = [];
 
+  Timer? _updateTimer;
+  List<int> _currentPathIndexList = [];
+
   @override
   void initState() {
     super.initState();
     selectedLand = widget.viewModel.landSelected!;
     selectedLand ??= LandSelection.lands.firstWhere(
         (element) => element.city.city == "Lleida" && element.id == 0);
+
+    loadCoords();
+    _updateRobotPositions();
+  }
+
+  void _updateRobotPositions() async {
+    Future.delayed(const Duration(seconds: 5), () async {
+      for (int i = 0; i < markers.length; i++) {
+        if(_currentPathIndexList[i] == path.length - 1) _currentPathIndexList[i] = 0;
+        await TimerService.shared.executeOnceSyncAfter(2, () {
+          setState(() {
+            final Marker updatedMarker = markers.elementAt(i).copyWith(
+                positionParam: path[
+                    _currentPathIndexList[i] + 1 ]);
+            markers.replace(i, updatedMarker);
+            _currentPathIndexList[i] = _currentPathIndexList[i] + 1;
+          });
+        });
+      }
+      _updateRobotPositions();
+    });
+  }
+
+  Future<void> loadMarkers() async {
     try {
-      print("Selected land is: $selectedLand\n\n");
+      for (int i = 0; i < widget.robots.length; i++) {
+        _currentPathIndexList.add(Random().nextInt(path.length));
+        Robot robot = widget.robots[i];
+        Marker marker = Marker(
+          markerId: MarkerId("marker_$i"),
+          position: path[_currentPathIndexList[i]],
+          infoWindow: InfoWindow(title: robot.name),
+          icon: markerIcon,
+        );
+        markers.add(marker);
+      }
     } catch (e) {
+      print("NO PATH");
       print(e);
     }
-    loadCoords();
   }
 
   void loadCoords() async {
@@ -93,25 +132,6 @@ class MapScreenState extends State<MapScreen> {
     await addCustomIcon();
   }
 
-  Future<void> loadMarkers() async {
-    try {
-      for (int i = 0; i < widget.robots.length; i++) {
-        Robot robot = widget.robots[i];
-        Marker marker = Marker(
-          markerId: MarkerId("marker_$i"),
-          position: path[Random().nextInt(path.length)],
-          infoWindow: InfoWindow(title: robot.name),
-          icon: markerIcon,
-        );
-        markers.add(marker);
-        print("Markers: ${marker.position}\n");
-      }
-    } catch (e) {
-      print("NO PATH");
-      print(e);
-    }
-  }
-
   Future<void> addCustomIcon() async {
     await BitmapDescriptor.fromAssetImage(
       const ImageConfiguration(),
@@ -128,6 +148,12 @@ class MapScreenState extends State<MapScreen> {
 
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
+
+  @override
+  void dispose() {
+    _updateTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +234,6 @@ class MapScreenState extends State<MapScreen> {
 
   Future<void> _sendPolygon() async {
     final kml = PolygonEntity("Polygon", perimeter);
-    print("KML: ${kml.body}");
     await LGService.shared?.sendKml(kml.body);
   }
 
