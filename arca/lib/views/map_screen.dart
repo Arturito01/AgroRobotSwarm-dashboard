@@ -7,10 +7,8 @@ import 'package:arca/entities/kml/polygon_entity.dart';
 import 'package:arca/models/lands_data.dart';
 import 'package:arca/models/mocks/coordinarte_kml_model.dart';
 import 'package:arca/services/lg_service.dart';
-import 'package:arca/services/timer_service.dart';
 import 'package:arca/utils/constants.dart';
 import 'package:arca/utils/extensions.dart';
-import 'package:arca/utils/set_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -35,7 +33,6 @@ class MapScreenState extends State<MapScreen> {
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
   late CameraPosition cameraPosition;
   Set<Marker> markers = {};
-
   String selectedRobotImage = 'assets/robots/amiga2.png';
   Set<Polygon> _polygon = HashSet<Polygon>();
   List<LatLng> perimeter = [];
@@ -43,6 +40,7 @@ class MapScreenState extends State<MapScreen> {
 
   Timer? _updateTimer;
   List<int> _currentPathIndexList = [];
+
 
   @override
   void initState() {
@@ -54,29 +52,18 @@ class MapScreenState extends State<MapScreen> {
     loadCoords();
   }
 
-  Future<void> _updateRobotPositions() async {
-    Future.delayed(const Duration(seconds: 5), () async {
-      for (int i = 0; i < markers.length; i++) {
-        if (_currentPathIndexList[i] == path.length - 1)
-          _currentPathIndexList[i] = 0;
-        await TimerService.shared.executeOnceSyncAfter(2, () async {
-          setState(() {
-            final Marker updatedMarker = markers
-                .elementAt(i)
-                .copyWith(positionParam: path[_currentPathIndexList[i] + 1]);
-            markers.replace(i, updatedMarker);
-            _currentPathIndexList[i] = _currentPathIndexList[i] + 1;
-          });
-        });
-      }
-      _updateRobotPositions();
-    });
-  }
-
   Future<void> loadMarkers() async {
+
+    Set<int> uniqueRandomIndices = Set();
+    while (uniqueRandomIndices.length < widget.robots.length) {
+      int randomIndex = Random().nextInt(path.length);
+      uniqueRandomIndices.add(randomIndex);
+    }
+
+    List<int> shuffledIndices = uniqueRandomIndices.toList()..shuffle();
     try {
       for (int i = 0; i < widget.robots.length; i++) {
-        _currentPathIndexList.add(Random().nextInt(path.length));
+        _currentPathIndexList.add(shuffledIndices[i]);
         Robot robot = widget.robots[i];
         Marker marker = Marker(
           markerId: MarkerId("marker_$i"),
@@ -91,7 +78,6 @@ class MapScreenState extends State<MapScreen> {
       print(e);
     }
     await _sendPolygon();
-    await _updateRobotPositions();
   }
 
   void loadCoords() async {
@@ -204,21 +190,22 @@ class MapScreenState extends State<MapScreen> {
             markers: markers,
           ),
           Align(
-              alignment: Alignment.bottomLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    FloatingActionButton.extended(
-                      onPressed: _sendOrbit,
-                      label: const Text('Send Orbit'),
-                      icon: const Icon(Icons.directions_boat),
-                      heroTag: null,
-                    ),
-                  ],
-                ),
-              ))
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FloatingActionButton.extended(
+                    onPressed: _buildOrbit,
+                    label: const Text('Send Orbit'),
+                    icon: const Icon(Icons.directions_boat),
+                    heroTag: null,
+                  ),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -249,20 +236,21 @@ class MapScreenState extends State<MapScreen> {
         cameraPosition, widget.robots, path, _currentPathIndexList);
 
     await LGService.shared?.sendKml(kml.body);
+    await Future.delayed(Duration(seconds: 3));
+
     String query = "playtour=RobotPath";
     await LGService.shared?.query(query);
   }
 
-  Future<void> _sendOrbit() async {
+  Future<void> _buildOrbit() async {
     final lookAt = LookAtEntity(
-        lng: cameraPosition.target.longitude,
-        lat: cameraPosition.target.latitude,
+        lng: selectedLand!.long,
+        lat: selectedLand!.lat,
         range: '1500',
         tilt: cameraPosition.tilt,
         heading: '0',
         zoom: cameraPosition.zoom.zoomLG);
     final orbit = OrbitEntity.buildOrbit(OrbitEntity.tag(lookAt));
-
     await LGService.shared?.sendOrbit(orbit, "Orbit");
   }
 }

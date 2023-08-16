@@ -6,7 +6,7 @@ class OrbitEntity {
     int orbit = 0;
     String content = '';
     String range = '100';
-    double altitude = marker.altitude + 100;
+    double altitude = marker.altitude + 150;
 
     while (orbit <= 36) {
       if (heading >= 360) heading -= 360;

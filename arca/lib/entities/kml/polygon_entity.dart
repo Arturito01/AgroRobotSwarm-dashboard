@@ -124,8 +124,7 @@ class PolygonEntity {
        <coordinates>${markerCoords(0)}</coordinates>
 		</Point>
     </Placemark>
-    
-        ${animate(robots[0].name, 0)}
+
 
 		  <Placemark id="${robots[1].name}">
       <name>${robots[1].name}</name>
@@ -141,6 +140,9 @@ class PolygonEntity {
        <coordinates>${markerCoords(1)}</coordinates>
 		</Point>
     </Placemark>
+
+    
+
 		  <Placemark id="${robots[2].name}">
       <name>${robots[2].name}</name>
       <description><![CDATA[
@@ -155,6 +157,7 @@ class PolygonEntity {
        <coordinates>${markerCoords(2)}</coordinates>
 		</Point>
     </Placemark>
+
 		  <Placemark id="${robots[3].name}">
       <name>${robots[3].name}</name>
       <description><![CDATA[
@@ -169,6 +172,7 @@ class PolygonEntity {
        <coordinates>${markerCoords(3)}</coordinates>
 		</Point>
     </Placemark>
+
 		  <Placemark id="${robots[4].name}">
       <name>${robots[4].name}</name>
       <description><![CDATA[
@@ -183,7 +187,15 @@ class PolygonEntity {
        <coordinates>${markerCoords(4)}</coordinates>
 		</Point>
     </Placemark>
-	
+            <gx:Tour>
+      <name>RobotPath</name>
+      <gx:Playlist>
+              ${animate(robots[0].name, robots[1].name, robots[2].name, robots[3].name, robots[4].name)}
+
+
+      </gx:Playlist>
+    </gx:Tour>
+
 </Document>
 </kml>
 
@@ -230,49 +242,177 @@ class PolygonEntity {
     return stringPoints;
   }
 
-  animate(String? placemarkId, int id) {
-    String animate = '''
-            <gx:Tour>
-      <name>RobotPath</name>
-      <gx:Playlist>
-    ''';
-    int x = 0;
-    for (int i = randomIndex[id]; i < path.length; i++) {
+  animate(String? placemarkId0, String? placemarkId1, String? placemarkId2,
+      String? placemarkId3, String? placemarkId4) {
+    int index0 = randomIndex[0];
+    int index1 = randomIndex[1];
+    int index2 = randomIndex[2];
+    int index3 = randomIndex[3];
+    int index4 = randomIndex[4];
+    String animate = "";
+    for (int x = 0; x < 100; x++) {
       animate += '''
                      <gx:FlyTo>
-          <gx:duration>0.4</gx:duration>
+          <gx:duration>9.5</gx:duration>
           <gx:flyToMode>smooth</gx:flyToMode>
           		${this.lookAt}
 
         </gx:FlyTo>
           <gx:AnimatedUpdate>
-          <gx:duration>2</gx:duration>
+          <gx:duration>10.0</gx:duration>
           <Update>
             <targetHref/>
             <Change>
-              <Placemark targetId="$placemarkId">
+              <Placemark targetId="$placemarkId0">
                 <Point>
                   <coordinates>
-                  ${path[i].longitude},${path[i].latitude},0
+                  ${path[index0].longitude},${path[index0].latitude},0
                   </coordinates>
                 </Point>
               </Placemark>
             </Change>
           </Update>
         </gx:AnimatedUpdate>
+        
+        <gx:FlyTo>
+          <gx:duration>9.5</gx:duration>
+          <gx:flyToMode>smooth</gx:flyToMode>
+          		${this.lookAt}
+
+        </gx:FlyTo>
+          <gx:AnimatedUpdate>
+          <gx:duration>10.0</gx:duration>
+          <Update>
+            <targetHref/>
+            <Change>
+              <Placemark targetId="$placemarkId1">
+                <Point>
+                  <coordinates>
+                  ${path[index1].longitude},${path[index1].latitude},0
+                  </coordinates>
+                </Point>
+              </Placemark>
+            </Change>
+          </Update>
+        </gx:AnimatedUpdate>
+        
+        <gx:FlyTo>
+          <gx:duration>9.5</gx:duration>
+          <gx:flyToMode>smooth</gx:flyToMode>
+          		${this.lookAt}
+
+        </gx:FlyTo>
+          <gx:AnimatedUpdate>
+          <gx:duration>10.0</gx:duration>
+          <Update>
+            <targetHref/>
+            <Change>
+              <Placemark targetId="$placemarkId2">
+                <Point>
+                  <coordinates>
+                  ${path[index2].longitude},${path[index2].latitude},0
+                  </coordinates>
+                </Point>
+              </Placemark>
+            </Change>
+          </Update>
+        </gx:AnimatedUpdate>
+        
+        <gx:FlyTo>
+          <gx:duration>9.5</gx:duration>
+          <gx:flyToMode>smooth</gx:flyToMode>
+          		${this.lookAt}
+
+        </gx:FlyTo>
+          <gx:AnimatedUpdate>
+          <gx:duration>10.0</gx:duration>
+          <Update>
+            <targetHref/>
+            <Change>
+              <Placemark targetId="$placemarkId3">
+                <Point>
+                  <coordinates>
+                  ${path[index3].longitude},${path[index3].latitude},0
+                  </coordinates>
+                </Point>
+              </Placemark>
+            </Change>
+          </Update>
+        </gx:AnimatedUpdate>
+        
+        <gx:FlyTo>
+          <gx:duration>9.5</gx:duration>
+          <gx:flyToMode>smooth</gx:flyToMode>
+          		${this.lookAt}
+
+        </gx:FlyTo>
+          <gx:AnimatedUpdate>
+          <gx:duration>10.0</gx:duration>
+          <Update>
+            <targetHref/>
+            <Change>
+              <Placemark targetId="$placemarkId4">
+                <Point>
+                  <coordinates>
+                  ${path[index4].longitude},${path[index4].latitude},0
+                  </coordinates>
+                </Point>
+              </Placemark>
+            </Change>
+          </Update>
+        </gx:AnimatedUpdate>
+        
+ 
       ''';
-      if (i == path.length) {
-        i = 0;
-      }
-      x++;
-      if (x == 100) {
-        i = path.length + 5;
+      index0 ++;
+      index1 ++;
+      index2 ++;
+      index3 ++;
+      index4 ++;
+      if(index0 == path.length - 2){
+        index0 = 0;
+      }      if(index1 == path.length - 2){
+        index1 = 0;
+      }      if(index2 == path.length - 2){
+        index2 = 0;
+      }      if(index3 == path.length - 2){
+        index3 = 0;
+      }      if(index4 == path.length - 2){
+        index4 = 0;
       }
     }
+
+    return animate;
+  }
+
+  text(String? placemarkId, int id, int x) {
+    String animate = "";
     animate += '''
-          </gx:Playlist>
-    </gx:Tour>
-    ''';
+                     <gx:FlyTo>
+          <gx:duration>9.5</gx:duration>
+          <gx:flyToMode>smooth</gx:flyToMode>
+          		${this.lookAt}
+
+        </gx:FlyTo>
+          <gx:AnimatedUpdate>
+          <gx:duration>10.0</gx:duration>
+          <Update>
+            <targetHref/>
+            <Change>
+              <Placemark targetId="$placemarkId">
+                <Point>
+                  <coordinates>
+                  ${path[(randomIndex[id] + x) % path.length].longitude},${path[(randomIndex[id] + x) % path.length].latitude},0
+                  </coordinates>
+                </Point>
+              </Placemark>
+            </Change>
+          </Update>
+        </gx:AnimatedUpdate>
+        
+ 
+      ''';
+
     return animate;
   }
 
