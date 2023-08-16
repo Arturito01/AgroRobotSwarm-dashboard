@@ -233,8 +233,6 @@ fi
   Future<Object?> sendOrbit(String tourKml, String tourName) async {
     final fileName = '$tourName.kml';
 
-    print("ORBIT: $tourKml");
-
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/$fileName');
     file.writeAsStringSync(tourKml);

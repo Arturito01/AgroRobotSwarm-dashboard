@@ -30,6 +30,24 @@ class LandSelectionScreen extends StatefulWidget {
   _LandSelectionScreenState createState() => _LandSelectionScreenState();
 }
 
+class CustomLoadingDialog extends StatelessWidget {
+  const CustomLoadingDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const AlertDialog(
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CircularProgressIndicator(),
+          SizedBox(height: 16),
+          Text('Applying Changes...'),
+        ],
+      ),
+    );
+  }
+}
+
 class _LandSelectionScreenState extends State<LandSelectionScreen> {
   late Country selectedCountry;
   late City selectedCity;
@@ -47,21 +65,37 @@ class _LandSelectionScreenState extends State<LandSelectionScreen> {
     if (country != null) {
       setState(() {
         selectedCountry = country;
-        selectedCity = widget.cityList.firstWhere((city) => city.country == selectedCountry);
-        selectedLand = widget.landList.firstWhere((land) => land.city == selectedCity);
+        selectedCity = widget.cityList
+            .firstWhere((city) => city.country == selectedCountry);
+        selectedLand =
+            widget.landList.firstWhere((land) => land.city == selectedCity);
       });
     }
   }
 
-  void applyChanges() {
+  void applyChanges(BuildContext context) async {
     widget.applyChanges(selectedCountry, selectedCity, selectedLand);
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return CustomLoadingDialog();
+      },
+    );
+
+    await Future.delayed(Duration(seconds: 3));
+    Navigator.pop(context);
+    LGService.shared?.clearKml(keepLogos: true);
+    Navigator.pop(context);
   }
 
   void _onCityChanged(City? city) {
     if (city != null) {
       setState(() {
         selectedCity = city;
-        selectedLand = widget.landList.firstWhere((land) => land.city == selectedCity);
+        selectedLand =
+            widget.landList.firstWhere((land) => land.city == selectedCity);
       });
     }
   }
@@ -270,9 +304,7 @@ class _LandSelectionScreenState extends State<LandSelectionScreen> {
                         ),
                       ),
                       onPressed: () {
-                        applyChanges();
-                        LGService.shared?.clearKml(keepLogos: true);
-                        Navigator.pop(context);
+                        applyChanges(context);
                       },
                     ),
                   ),

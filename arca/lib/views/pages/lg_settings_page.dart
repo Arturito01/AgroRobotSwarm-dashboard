@@ -43,7 +43,30 @@ class LGSettingsPage extends StatelessWidget {
                 width: 300,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    LGService.shared?.setRefresh();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Confirmation'),
+                          content: Text('Are you sure you want to set slaves refresh?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                LGService.shared?.setRefresh();
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   icon: const Icon(Icons.settings),
                   label: const Text('SET SLAVES REFRESH'),
@@ -54,7 +77,30 @@ class LGSettingsPage extends StatelessWidget {
                 width: 300,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    LGService.shared?.resetRefresh();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Confirmation'),
+                          content: Text('Are you sure you want to reset slaves refresh?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                LGService.shared?.setRefresh();
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   icon: const Icon(Icons.refresh),
                   label: const Text('RESET SLAVES REFRESH'),
@@ -65,7 +111,30 @@ class LGSettingsPage extends StatelessWidget {
                 width: 300,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    LGService.shared?.clearKml();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Confirmation'),
+                          content: Text('Are you sure you want to clear kml and logos?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                LGService.shared?.clearKml();
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   icon: const Icon(Icons.clear_all),
                   label: const Text('CLEAR KML + LOGOS'),
@@ -76,7 +145,30 @@ class LGSettingsPage extends StatelessWidget {
                 width: 300,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    LGService.shared?.relaunch();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Confirmation'),
+                          content: Text('Are you sure you want to relaunch?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                LGService.shared?.relaunch();
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   icon: const Icon(Icons.refresh),
                   label: const Text('RELAUNCH'),
@@ -87,7 +179,30 @@ class LGSettingsPage extends StatelessWidget {
                 width: 300,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    LGService.shared?.reboot();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Confirmation'),
+                          content: Text('Are you sure you want to reboot?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                LGService.shared?.reboot();
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   icon: const Icon(Icons.restart_alt),
                   label: const Text('REBOOT'),
@@ -98,7 +213,30 @@ class LGSettingsPage extends StatelessWidget {
                 width: 300,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    LGService.shared?.poweroff();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Confirmation'),
+                          content: Text('Are you sure you want to poweroff?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                LGService.shared?.poweroff();
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   icon: const Icon(Icons.power_settings_new),
                   label: const Text('POWER OFF'),

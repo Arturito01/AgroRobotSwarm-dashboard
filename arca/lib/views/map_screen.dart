@@ -52,18 +52,18 @@ class MapScreenState extends State<MapScreen> {
         (element) => element.city.city == "Lleida" && element.id == 0);
 
     loadCoords();
-    _updateRobotPositions();
   }
 
-  void _updateRobotPositions() async {
+  Future<void> _updateRobotPositions() async {
     Future.delayed(const Duration(seconds: 5), () async {
       for (int i = 0; i < markers.length; i++) {
-        if(_currentPathIndexList[i] == path.length - 1) _currentPathIndexList[i] = 0;
-        await TimerService.shared.executeOnceSyncAfter(2, () {
+        if (_currentPathIndexList[i] == path.length - 1)
+          _currentPathIndexList[i] = 0;
+        await TimerService.shared.executeOnceSyncAfter(2, () async {
           setState(() {
-            final Marker updatedMarker = markers.elementAt(i).copyWith(
-                positionParam: path[
-                    _currentPathIndexList[i] + 1 ]);
+            final Marker updatedMarker = markers
+                .elementAt(i)
+                .copyWith(positionParam: path[_currentPathIndexList[i] + 1]);
             markers.replace(i, updatedMarker);
             _currentPathIndexList[i] = _currentPathIndexList[i] + 1;
           });
@@ -90,6 +90,8 @@ class MapScreenState extends State<MapScreen> {
       print("NO PATH");
       print(e);
     }
+    await _sendPolygon();
+    await _updateRobotPositions();
   }
 
   void loadCoords() async {
@@ -128,7 +130,6 @@ class MapScreenState extends State<MapScreen> {
     for (CoordinateKmlModel coords in selectedLand!.path) {
       path.add(LatLng(coords.longitude, coords.latitude));
     }
-    await _sendPolygon();
     await addCustomIcon();
   }
 
@@ -233,8 +234,23 @@ class MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _sendPolygon() async {
-    final kml = PolygonEntity("Polygon", perimeter);
+    List<LatLng> markerList = [];
+    for (Marker marker in markers) {
+      markerList
+          .add(LatLng(marker.position.latitude, marker.position.longitude));
+    }
+    final lookAt = LookAtEntity.lookAtLinear(
+        cameraPosition.target.latitude,
+        cameraPosition.target.longitude,
+        cameraPosition.zoom.zoomLG,
+        cameraPosition.tilt,
+        cameraPosition.bearing);
+    final kml = PolygonEntity("Polygon", perimeter, lookAt, markerList,
+        cameraPosition, widget.robots, path, _currentPathIndexList);
+
     await LGService.shared?.sendKml(kml.body);
+    String query = "playtour=RobotPath";
+    await LGService.shared?.query(query);
   }
 
   Future<void> _sendOrbit() async {
