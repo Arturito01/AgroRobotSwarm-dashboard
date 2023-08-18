@@ -128,11 +128,7 @@ class PolygonEntity {
 
 		  <Placemark id="${robots[1].name}">
       <name>${robots[1].name}</name>
-      <description><![CDATA[
-          <p><b>Scientific Name:</b> "NAME"</p>
-          <p><b>Density:</b> "Density"</p>
-          <p><b>CO2 Capture:</b> "CO2" kg/year</p>
-          ]]></description>
+
 		${LookAtEntity.lookAtLinear(markers[1].latitude, markers[1].longitude, cameraPosition.zoom.zoomLG, cameraPosition.tilt, cameraPosition.bearing)}
       <styleUrl>#downArrowIcon</styleUrl>
      		<Point>
@@ -145,12 +141,7 @@ class PolygonEntity {
 
 		  <Placemark id="${robots[2].name}">
       <name>${robots[2].name}</name>
-      <description><![CDATA[
-          <p><b>Scientific Name:</b> "NAME"</p>
-          <p><b>Density:</b> "Density"</p>
-          <p><b>CO2 Capture:</b> "CO2" kg/year</p>
-          ]]></description>
-		${LookAtEntity.lookAtLinear(markers[2].latitude, markers[2].longitude, cameraPosition.zoom.zoomLG, cameraPosition.tilt, cameraPosition.bearing)}
+${LookAtEntity.lookAtLinear(markers[2].latitude, markers[2].longitude, cameraPosition.zoom.zoomLG, cameraPosition.tilt, cameraPosition.bearing)}
       <styleUrl>#downArrowIcon</styleUrl>
      		<Point>
 		   <altitudeMode>relativeToGround</altitudeMode>
@@ -160,11 +151,6 @@ class PolygonEntity {
 
 		  <Placemark id="${robots[3].name}">
       <name>${robots[3].name}</name>
-      <description><![CDATA[
-          <p><b>Scientific Name:</b> "NAME"</p>
-          <p><b>Density:</b> "Density"</p>
-          <p><b>CO2 Capture:</b> "CO2" kg/year</p>
-          ]]></description>
 		${LookAtEntity.lookAtLinear(markers[3].latitude, markers[3].longitude, cameraPosition.zoom.zoomLG, cameraPosition.tilt, cameraPosition.bearing)}
       <styleUrl>#downArrowIcon</styleUrl>
      		<Point>
@@ -175,11 +161,6 @@ class PolygonEntity {
 
 		  <Placemark id="${robots[4].name}">
       <name>${robots[4].name}</name>
-      <description><![CDATA[
-          <p><b>Scientific Name:</b> "NAME"</p>
-          <p><b>Density:</b> "Density"</p>
-          <p><b>CO2 Capture:</b> "CO2" kg/year</p>
-          ]]></description>
 		${LookAtEntity.lookAtLinear(markers[4].latitude, markers[4].longitude, cameraPosition.zoom.zoomLG, cameraPosition.tilt, cameraPosition.bearing)}
       <styleUrl>#downArrowIcon</styleUrl>
      		<Point>
@@ -253,7 +234,7 @@ class PolygonEntity {
     for (int x = 0; x < 100; x++) {
       animate += '''
                      <gx:FlyTo>
-          <gx:duration>9.5</gx:duration>
+          <gx:duration>1.5</gx:duration>
           <gx:flyToMode>smooth</gx:flyToMode>
           		${this.lookAt}
 
@@ -275,7 +256,7 @@ class PolygonEntity {
         </gx:AnimatedUpdate>
         
         <gx:FlyTo>
-          <gx:duration>9.5</gx:duration>
+          <gx:duration>1.5</gx:duration>
           <gx:flyToMode>smooth</gx:flyToMode>
           		${this.lookAt}
 
@@ -297,7 +278,7 @@ class PolygonEntity {
         </gx:AnimatedUpdate>
         
         <gx:FlyTo>
-          <gx:duration>9.5</gx:duration>
+          <gx:duration>1.5</gx:duration>
           <gx:flyToMode>smooth</gx:flyToMode>
           		${this.lookAt}
 
@@ -319,7 +300,7 @@ class PolygonEntity {
         </gx:AnimatedUpdate>
         
         <gx:FlyTo>
-          <gx:duration>9.5</gx:duration>
+          <gx:duration>1.5</gx:duration>
           <gx:flyToMode>smooth</gx:flyToMode>
           		${this.lookAt}
 
@@ -341,7 +322,7 @@ class PolygonEntity {
         </gx:AnimatedUpdate>
         
         <gx:FlyTo>
-          <gx:duration>9.5</gx:duration>
+          <gx:duration>1.5</gx:duration>
           <gx:flyToMode>smooth</gx:flyToMode>
           		${this.lookAt}
 

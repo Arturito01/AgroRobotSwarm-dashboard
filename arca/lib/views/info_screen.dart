@@ -46,7 +46,7 @@ class _InfoScreenState extends State<InfoScreen> {
 }
 
 Widget info() {
-  final _mentors = [
+  final mentors = [
     'Andreu Ibáñez Perales',
     'Victor Carreras',
     'Alejandro Illán Marcos',
@@ -54,31 +54,31 @@ Widget info() {
   ];
 
   /// Property that defines the author email.
-  final _authorEmail = 'arturculleres@gmail.com';
+  const authorEmail = 'arturculleres@gmail.com';
 
   /// Property that defines the author GitHub profile name.
-  final _authorGitHub = 'Arturito01';
+  const authorGitHub = 'Arturito01';
 
   /// Property that defines the author LinkedIn profile name.
-  final _authorLinkedIn = 'arturculleres';
+  const authorLinkedIn = 'arturculleres';
 
   /// Property that defines the organization Instagram.
-  final _orgInstagram = '_liquidgalaxy';
+  const orgInstagram = '_liquidgalaxy';
 
   /// Property that defines the organization Twitter.
-  final _orgTwitter = '_liquidgalaxy';
+  const orgTwitter = '_liquidgalaxy';
 
   /// Property that defines the organization GitHub profile name.
-  final _orgGitHub = 'LiquidGalaxyLAB';
+  const orgGitHub = 'LiquidGalaxyLAB';
 
   /// Property that defines the organization LinkedIn profile name.
-  final _orgLinkedIn = 'google-summer-of-code---liquid-galaxy-project';
+  const orgLinkedIn = 'google-summer-of-code---liquid-galaxy-project';
 
   /// Property that defines the organization website URL.
-  final _orgWebsite = 'www.liquidgalaxy.eu';
+  const orgWebsite = 'www.liquidgalaxy.eu';
 
   /// Opens the email app with the given [email] in it.
-  void _sendEmail(String email) async {
+  void sendEmail(String email) async {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: email,
@@ -90,7 +90,7 @@ Widget info() {
   }
 
   /// Opens the [account]'s GitHub profile.
-  void _openGitHub(String account) async {
+  void openGitHub(String account) async {
     final Uri ghLaunchUri = Uri.https('github.com', '/$account');
 
     if (await canLaunchUrl(ghLaunchUri)) {
@@ -99,7 +99,7 @@ Widget info() {
   }
 
   /// Opens the [account]'s LinkedIn profile.
-  void _openLinkedIn(String account) async {
+  void openLinkedIn(String account) async {
     final Uri liLaunchUri = Uri.https('linkedin.com', '/$account');
 
     if (await canLaunchUrl(liLaunchUri)) {
@@ -108,7 +108,7 @@ Widget info() {
   }
 
   /// Opens the [account]'s Instagram profile.
-  void _openInstagram(String account) async {
+  void openInstagram(String account) async {
     final Uri liLaunchUri = Uri.https('instagram.com', '/$account');
 
     if (await canLaunchUrl(liLaunchUri)) {
@@ -117,7 +117,7 @@ Widget info() {
   }
 
   /// Opens the [account]'s Twitter profile.
-  void _openTwitter(String account) async {
+  void openTwitter(String account) async {
     final Uri liLaunchUri = Uri.https('twitter.com', '/$account');
 
     if (await canLaunchUrl(liLaunchUri)) {
@@ -126,7 +126,7 @@ Widget info() {
   }
 
   /// Opens the given [link].
-  void _openLink(String link) async {
+  void openLink(String link) async {
     final Uri liLaunchUri = Uri.parse(link);
 
     if (await canLaunchUrl(liLaunchUri)) {
@@ -139,7 +139,7 @@ Widget info() {
   }
 
   /// Builds a [Text] that will be used to show the section [title].
-  Text _buildSectionTitle(String title) {
+  Text buildSectionTitle(String title) {
     return Text(
       title,
       style: const TextStyle(
@@ -152,7 +152,7 @@ Widget info() {
 
   /// Builds a [Widget] that will be used to render a paragraph according to the
   /// given [text].
-  Widget _buildDescriptionParagraph(String text) {
+  Widget buildDescriptionParagraph(String text) {
     const tab = '        ';
 
     return Padding(
@@ -207,7 +207,7 @@ Widget info() {
                 padding: _defaultPadding(),
                 child: Column(
                   children: [
-                    _buildSectionTitle('Author'),
+                    buildSectionTitle('Author'),
                     const Text(
                       'Artur Cullerés Cervera',
                       style: TextStyle(
@@ -227,9 +227,9 @@ Widget info() {
                             color: Colors.white,
                           ),
                           splashRadius: 24,
-                          tooltip: _authorEmail,
+                          tooltip: authorEmail,
                           onPressed: () {
-                            _sendEmail(_authorEmail);
+                            sendEmail(authorEmail);
                           },
                         ),
                         IconButton(
@@ -239,9 +239,9 @@ Widget info() {
                             SVT.github,
                             color: Colors.white,
                           ),
-                          tooltip: _authorGitHub,
+                          tooltip: authorGitHub,
                           onPressed: () {
-                            _openGitHub(_authorGitHub);
+                            openGitHub(authorGitHub);
                           },
                         ),
                         IconButton(
@@ -251,9 +251,9 @@ Widget info() {
                             color: Colors.white,
                           ),
                           splashRadius: 24,
-                          tooltip: _authorLinkedIn,
+                          tooltip: authorLinkedIn,
                           onPressed: () {
-                            _openLinkedIn('in/$_authorLinkedIn');
+                            openLinkedIn('in/$authorLinkedIn');
                           },
                         ),
                       ],
@@ -265,7 +265,7 @@ Widget info() {
                 padding: _defaultPadding(),
                 child: Column(
                   children: [
-                    _buildSectionTitle('Lleida Liquid Galaxy LAB support'),
+                    buildSectionTitle('Lleida Liquid Galaxy LAB support'),
                     const Text(
                       'Albert Ricart',
                       style: TextStyle(
@@ -287,7 +287,7 @@ Widget info() {
                           splashRadius: 24,
                           tooltip: 'albertricart2@gmail.com',
                           onPressed: () {
-                            _sendEmail('albertricart2@gmail.com');
+                            sendEmail('albertricart2@gmail.com');
                           },
                         ),
                       ],
@@ -299,8 +299,42 @@ Widget info() {
                 padding: _defaultPadding(),
                 child: Column(
                   children: [
-                    _buildSectionTitle('Mentors'),
-                    ..._mentors
+                    buildSectionTitle('UXI design'),
+                    const Text(
+                      'Arnau Riera',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          iconSize: 30,
+                          icon: const Icon(
+                            Icons.mail_rounded,
+                            color: Colors.white,
+                          ),
+                          splashRadius: 24,
+                          tooltip: 'arnauriera@gmail.com',
+                          onPressed: () {
+                            sendEmail('arnauriera@gmail.com');
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: _defaultPadding(),
+                child: Column(
+                  children: [
+                    buildSectionTitle('Mentors'),
+                    ...mentors
                         .map(
                           (mentor) => Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -324,7 +358,7 @@ Widget info() {
               Padding(
                 padding: _defaultPadding(),
                 child: Column(children: [
-                  _buildSectionTitle('Organization Contact/Social'),
+                  buildSectionTitle('Organization Contact/Social'),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -336,9 +370,9 @@ Widget info() {
                           color: Colors.white,
                         ),
                         splashRadius: 24,
-                        tooltip: '@$_orgInstagram',
+                        tooltip: '@$orgInstagram',
                         onPressed: () {
-                          _openInstagram(_orgInstagram);
+                          openInstagram(orgInstagram);
                         },
                       ),
                       IconButton(
@@ -348,9 +382,9 @@ Widget info() {
                           color: Colors.white,
                         ),
                         splashRadius: 24,
-                        tooltip: '@$_orgTwitter',
+                        tooltip: '@$orgTwitter',
                         onPressed: () {
-                          _openTwitter(_orgTwitter);
+                          openTwitter(orgTwitter);
                         },
                       ),
                       IconButton(
@@ -360,9 +394,9 @@ Widget info() {
                           SVT.github,
                           color: Colors.white,
                         ),
-                        tooltip: _orgGitHub,
+                        tooltip: orgGitHub,
                         onPressed: () {
-                          _openGitHub(_orgGitHub);
+                          openGitHub(orgGitHub);
                         },
                       ),
                       IconButton(
@@ -375,7 +409,7 @@ Widget info() {
                         tooltip:
                             'Liquid Galaxy Project (Google Summer of Code)',
                         onPressed: () {
-                          _openLinkedIn('company/$_orgLinkedIn');
+                          openLinkedIn('company/$orgLinkedIn');
                         },
                       ),
                       IconButton(
@@ -385,9 +419,9 @@ Widget info() {
                           color: Colors.white,
                         ),
                         splashRadius: 24,
-                        tooltip: _orgWebsite,
+                        tooltip: orgWebsite,
                         onPressed: () {
-                          _openLink('https://$_orgWebsite');
+                          openLink('https://$orgWebsite');
                         },
                       ),
                       IconButton(
@@ -399,7 +433,7 @@ Widget info() {
                         splashRadius: 24,
                         tooltip: 'Liquid Galaxy LAB',
                         onPressed: () {
-                          _openLink(
+                          openLink(
                               'https://play.google.com/store/apps/developer?id=Liquid+Galaxy+LAB');
                         },
                       ),
@@ -410,7 +444,7 @@ Widget info() {
               Padding(
                 padding: _defaultPadding(),
                 child: Column(children: [
-                  _buildSectionTitle('Logos'),
+                  buildSectionTitle('Logos'),
                   Container(
                     margin: const EdgeInsets.only(
                       top: 10,
@@ -435,13 +469,15 @@ Widget info() {
               Padding(
                 padding: const EdgeInsets.only(top: 32, left: 20, right: 20),
                 child: Column(children: [
-                  _buildSectionTitle('Project description'),
-                  _buildDescriptionParagraph("ARCA is a dashboard application that allows better control of their fields, to all farmers who want to take their business to a more technological environment."),
-                  _buildDescriptionParagraph("The data is visible both into the application and into the Google Earth (running on the Liquid Galaxy rig) as placemarks, polygons, ballons and more")
+                  buildSectionTitle('Project description'),
+                  buildDescriptionParagraph(
+                      "ARCA is a dashboard application that allows better control of their fields, to all farmers who want to take their business to a more technological environment."),
+                  buildDescriptionParagraph(
+                      "The data is visible both into the application and into the Google Earth (running on the Liquid Galaxy rig) as placemarks, polygons, ballons and more")
                 ]),
               ),
-              SizedBox(
-                height: defaultPadding * 5,
+              const SizedBox(
+                height: (defaultPadding * 5),
               )
             ],
           ),

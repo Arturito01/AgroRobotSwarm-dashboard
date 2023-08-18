@@ -46,7 +46,7 @@ class _RobotInstructionsPageState extends State<RobotInstructionsPage> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text('Instructions'),
+                  title: const Text('Instructions'),
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -66,14 +66,14 @@ class _RobotInstructionsPageState extends State<RobotInstructionsPage> {
                       onPressed: () {
                         Navigator.of(context).pop(); // Cerrar el popup
                       },
-                      child: Text('Close'),
+                      child: const Text('Close'),
                     ),
                   ],
                 );
               },
             );
           },
-          child: Text('Show Instructions'),
+          child: const Text('Show Instructions'),
         ),
       ),
     );

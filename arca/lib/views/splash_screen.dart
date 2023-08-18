@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:arca/utils/colors.dart';
 import 'package:arca/views/main_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:arca/utils/colors.dart';
 
 class SplashScreenPage extends StatefulWidget {
   const SplashScreenPage({Key? key}) : super(key: key);
@@ -41,11 +41,11 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
           MaterialPageRoute(builder: (context) => const MainScreen()));
     });
   }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-
 
     return SafeArea(
       child: Scaffold(

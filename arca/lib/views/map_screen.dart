@@ -34,13 +34,12 @@ class MapScreenState extends State<MapScreen> {
   late CameraPosition cameraPosition;
   Set<Marker> markers = {};
   String selectedRobotImage = 'assets/robots/amiga2.png';
-  Set<Polygon> _polygon = HashSet<Polygon>();
+  final Set<Polygon> _polygon = HashSet<Polygon>();
   List<LatLng> perimeter = [];
   List<LatLng> path = [];
 
   Timer? _updateTimer;
-  List<int> _currentPathIndexList = [];
-
+  final List<int> _currentPathIndexList = [];
 
   @override
   void initState() {
@@ -53,30 +52,25 @@ class MapScreenState extends State<MapScreen> {
   }
 
   Future<void> loadMarkers() async {
-
-    Set<int> uniqueRandomIndices = Set();
+    Set<int> uniqueRandomIndices = {};
     while (uniqueRandomIndices.length < widget.robots.length) {
       int randomIndex = Random().nextInt(path.length);
       uniqueRandomIndices.add(randomIndex);
     }
 
     List<int> shuffledIndices = uniqueRandomIndices.toList()..shuffle();
-    try {
-      for (int i = 0; i < widget.robots.length; i++) {
-        _currentPathIndexList.add(shuffledIndices[i]);
-        Robot robot = widget.robots[i];
-        Marker marker = Marker(
-          markerId: MarkerId("marker_$i"),
-          position: path[_currentPathIndexList[i]],
-          infoWindow: InfoWindow(title: robot.name),
-          icon: markerIcon,
-        );
-        markers.add(marker);
-      }
-    } catch (e) {
-      print("NO PATH");
-      print(e);
+    for (int i = 0; i < widget.robots.length; i++) {
+      _currentPathIndexList.add(shuffledIndices[i]);
+      Robot robot = widget.robots[i];
+      Marker marker = Marker(
+        markerId: MarkerId("marker_$i"),
+        position: path[_currentPathIndexList[i]],
+        infoWindow: InfoWindow(title: robot.name),
+        icon: markerIcon,
+      );
+      markers.add(marker);
     }
+
     await _sendPolygon();
   }
 
@@ -97,13 +91,10 @@ class MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _loadPolygon() async {
-    try {
-      for (CoordinateKmlModel coords in selectedLand!.perimeter) {
-        perimeter.add(LatLng(coords.longitude, coords.latitude));
-      }
-    } catch (e) {
-      print(e);
+    for (CoordinateKmlModel coords in selectedLand!.perimeter) {
+      perimeter.add(LatLng(coords.longitude, coords.latitude));
     }
+
     _polygon.add(Polygon(
         polygonId: const PolygonId('1'),
         points: perimeter,
@@ -205,6 +196,23 @@ class MapScreenState extends State<MapScreen> {
                 ],
               ),
             ),
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FloatingActionButton.extended(
+                    onPressed: _showPath,
+                    label: const Text('Show path on LG'),
+                    icon: const Icon(Icons.play_arrow),
+                    heroTag: null,
+                  ),
+                ],
+              ),
+            ),
           )
         ],
       ),
@@ -220,7 +228,13 @@ class MapScreenState extends State<MapScreen> {
         cameraPosition.bearing);
   }
 
+  Future<void> _showPath() async {
+    String query = "playtour=RobotPath";
+    await LGService.shared?.query(query);
+  }
+
   Future<void> _sendPolygon() async {
+    Future.delayed(const Duration(seconds: 3));
     List<LatLng> markerList = [];
     for (Marker marker in markers) {
       markerList
@@ -236,10 +250,6 @@ class MapScreenState extends State<MapScreen> {
         cameraPosition, widget.robots, path, _currentPathIndexList);
 
     await LGService.shared?.sendKml(kml.body);
-    await Future.delayed(Duration(seconds: 3));
-
-    String query = "playtour=RobotPath";
-    await LGService.shared?.query(query);
   }
 
   Future<void> _buildOrbit() async {

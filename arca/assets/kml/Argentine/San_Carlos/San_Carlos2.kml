@@ -68,25 +68,9 @@
 					<coordinates>-69.09387733510908,-33.74891100004616,0</coordinates>
 				</Point>
 			</Placemark>
+
 			<Placemark>
 				<name>C3</name>
-				<LookAt>
-					<longitude>-69.09394623716217</longitude>
-					<latitude>-33.74866959014613</latitude>
-					<altitude>0</altitude>
-					<heading>123.1535601667813</heading>
-					<tilt>24.7589053261344</tilt>
-					<range>113.3850550208176</range>
-					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
-				</LookAt>
-				<styleUrl>#m_ylw-pushpin</styleUrl>
-				<Point>
-					<gx:drawOrder>1</gx:drawOrder>
-					<coordinates>-69.094108331326,-33.74853989490715,0</coordinates>
-				</Point>
-			</Placemark>
-			<Placemark>
-				<name>C4</name>
 				<LookAt>
 					<longitude>-69.09394623716217</longitude>
 					<latitude>-33.74866959014613</latitude>
@@ -102,6 +86,23 @@
 					<coordinates>-69.09430271284965,-33.74878723859073,0</coordinates>
 				</Point>
 			</Placemark>
+			<Placemark>
+            				<name>C4</name>
+            				<LookAt>
+            					<longitude>-69.09394623716217</longitude>
+            					<latitude>-33.74866959014613</latitude>
+            					<altitude>0</altitude>
+            					<heading>123.1535601667813</heading>
+            					<tilt>24.7589053261344</tilt>
+            					<range>113.3850550208176</range>
+            					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+            				</LookAt>
+            				<styleUrl>#m_ylw-pushpin</styleUrl>
+            				<Point>
+            					<gx:drawOrder>1</gx:drawOrder>
+            					<coordinates>-69.094108331326,-33.74853989490715,0</coordinates>
+            				</Point>
+            			</Placemark>
 		</Folder>
 		<Folder>
 			<name>Puntos</name>

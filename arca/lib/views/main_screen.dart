@@ -82,8 +82,8 @@ class _MainState extends State<MainScreen> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: const Text("YOU DON'T HAVE ROBOTS"),
-                              content:
-                                  const Text('Add robots on the bottom right page'),
+                              content: const Text(
+                                  'Add robots on the bottom right page'),
                               actions: [
                                 TextButton(
                                   onPressed: () {
@@ -229,7 +229,7 @@ class _MainState extends State<MainScreen> {
                                   country: viewModel.countrySelected,
                                   city: viewModel.citySelected,
                                   land: viewModel.landSelected,
-                                  applyChanges: (country, city, land){
+                                  applyChanges: (country, city, land) {
                                     setState(() {
                                       viewModel.setCountry(country);
                                       viewModel.setCity(city);
@@ -297,13 +297,6 @@ class _MainState extends State<MainScreen> {
             ),
           ],
         ),
-        /*floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _showAddRobotDialog(context);
-          },
-          tooltip: 'Increment',
-          child: const Icon(Icons.add),
-        ),*/
       );
     } else {
       return Scaffold(
@@ -329,13 +322,6 @@ class _MainState extends State<MainScreen> {
                     })),
           ],
         ),
-        /*floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _showAddRobotDialog(context);
-          },
-          tooltip: 'Increment',
-          child: const Icon(Icons.add),
-        ),*/
       );
     }
   }
@@ -363,7 +349,6 @@ class _MainState extends State<MainScreen> {
                 'Add',
               ),
               onPressed: () {
-                //_incrementCounter(robotName);
                 Navigator.of(context).pop();
               },
             ),

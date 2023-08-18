@@ -96,7 +96,7 @@ class _ConnectionSettingsState extends State<ConnectionSettings> {
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: const Icon(Icons.lock),
                         suffixIcon: GestureDetector(
                           onTap: () {
                             setState(() {
@@ -105,7 +105,7 @@ class _ConnectionSettingsState extends State<ConnectionSettings> {
                           },
                           child: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
                         ),
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
                       style: const TextStyle(color: Colors.white),
                       validator: (value) {

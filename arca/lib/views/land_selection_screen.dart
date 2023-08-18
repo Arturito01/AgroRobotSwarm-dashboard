@@ -80,11 +80,11 @@ class _LandSelectionScreenState extends State<LandSelectionScreen> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return CustomLoadingDialog();
+        return const CustomLoadingDialog();
       },
     );
 
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
     Navigator.pop(context);
     LGService.shared?.clearKml(keepLogos: true);
     Navigator.pop(context);
@@ -174,7 +174,7 @@ class _LandSelectionScreenState extends State<LandSelectionScreen> {
                           value: country,
                           child: Text(
                             country.country,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: textSelected,
                               fontSize: 20,
                             ),
@@ -185,7 +185,7 @@ class _LandSelectionScreenState extends State<LandSelectionScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               SizedBox(
                 height: 60,
                 width: 300,
