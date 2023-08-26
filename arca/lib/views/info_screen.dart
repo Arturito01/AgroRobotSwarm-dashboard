@@ -2,8 +2,6 @@ import 'package:arca/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../utils/icons.dart';
-
 class InfoScreen extends StatefulWidget {
   const InfoScreen({super.key});
 
@@ -216,7 +214,7 @@ Widget info() {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Row(
+                    /*Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -291,7 +289,7 @@ Widget info() {
                           },
                         ),
                       ],
-                    ),
+                    ),*/
                   ],
                 ),
               ),
@@ -359,7 +357,7 @@ Widget info() {
                 padding: _defaultPadding(),
                 child: Column(children: [
                   buildSectionTitle('Organization Contact/Social'),
-                  Row(
+                  /*Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -438,7 +436,7 @@ Widget info() {
                         },
                       ),
                     ],
-                  ),
+                  ),*/
                 ]),
               ),
               Padding(
